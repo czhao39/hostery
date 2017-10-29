@@ -1,0 +1,14 @@
+nav, .nav-wrapper i {
+    height: 56px !important;
+    line-height: 56px !important;
+}
+
+.nav-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+#content {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}

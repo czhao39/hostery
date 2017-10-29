@@ -11,6 +11,9 @@ app = Flask(__name__, static_url_path="")
 def index():
     return render_template("index.html")
 
+@app.route("/data")
+def data():
+    return render_template("data.html")
 
 if __name__ == "__main__":
     import sys
