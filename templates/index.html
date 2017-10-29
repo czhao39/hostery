@@ -1,7 +1,31 @@
 {% extends "layout.html" %}
 
+
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" href="/css/index.css">
+{% endblock %}
+
+
 {% block content %}
     {{ super() }}
 
-    Hello world!
+    <div id="welcome-wrapper">
+        <h3 class="center-align">Welcome to The Hostery.</h3>
+        <div class="row">
+            <form id="search-form" action="data" method="GET">
+                <div class="col s12 m10 offset-m1 l8 offset-l2">
+                    <div class="input-field col s6">
+                        <input name="latitude" id="search-latitude" type="text" class="validate" required>
+                        <label for="search-latitude">Latitude</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input name="longitude" id="search-longitude" type="text" class="validate" required>
+                        <label for="search-longitude">Longitude</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
