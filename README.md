@@ -1,1 +1,1 @@
-# Capital One Airbnb Challenge
+# Hostery | Maximize Your Airbnb Income
