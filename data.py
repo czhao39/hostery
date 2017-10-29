@@ -28,9 +28,9 @@ def get_property(lat, lng):
 
 
 """
-Given the latitude and longitude of a new property, estimates the weekly income per hostee by averaging the prices of the n closest properties.
+Given the latitude and longitude of a new property, estimates the average weekly income per hostee by averaging the prices of the n closest properties.
 """
-def estimate_weekly_income(lat, lng, n=4):
+def get_weekly_avg_income(lat, lng, n=4):
     props = []
     with open(LISTINGS_PATH) as listings_csv:
         listings = csv.DictReader(listings_csv)
@@ -46,7 +46,7 @@ def estimate_weekly_income(lat, lng, n=4):
 """
 Given the latitude and longitude of a property, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
 """
-def estimate_price_with_max_bookings(lat, lng, dist_range=0.5):
+def get_max_bookings_price(lat, lng, dist_range=0.5):
     dist_range_sq = dist_range**2
     props = []
     price_estimate = 1 << 32

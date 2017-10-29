@@ -20,3 +20,17 @@ nav, .navbar-fixed, .nav-wrapper i {
     margin-top: 3rem;
     margin-bottom: 3rem;
 }
+
+.alerts {
+    margin-top: 2rem;
+}
+
+.alert {
+    max-width: 30rem;
+    margin: auto;
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 3px;
+    background-color: #F44336;
+    color: white;
+}

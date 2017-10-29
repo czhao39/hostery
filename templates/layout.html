@@ -39,6 +39,18 @@
         <div id="content" class="container">
             {% block content %}
             {% endblock %}
+
+            <!-- Alerts (e.g. errors) -->
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alerts">
+                {% for message in messages %}
+                <div class="alert center-align">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
         </div>
+
     </body>
 </html>

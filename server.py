@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
 from flask import *
+import secret
 import data
+import traceback
 
 
 app = Flask(__name__, static_url_path="")
+app.secret_key = secret.SECRET_KEY
 
 
 @app.route("/")
@@ -13,7 +16,19 @@ def index():
 
 @app.route("/data")
 def data():
-    return render_template("data.html")
+    try:
+        lat = float(request.args.get("latitude"))
+        lng = float(request.args.get("longitude"))
+        context = {
+            "weekly_avg_income": data.get_weekly_avg_income(lat, lng),
+            "max_bookings_price": data.get_max_bookings_price(lat, lng),
+        }
+        return render_template("data.html", **context)
+    except:
+        traceback.print_exc()
+        flash("Oh no, something went wrong!")
+        return redirect("/")
+
 
 if __name__ == "__main__":
     import sys
