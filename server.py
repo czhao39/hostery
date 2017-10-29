@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import *
-import requests
+import data
 
 
 app = Flask(__name__, static_url_path="")
