@@ -5,27 +5,54 @@
     {{ super() }}
 
     <link rel="stylesheet" href="/css/index.css">
+
+    <script type="text/javascript" src="/js/index.js"></script>
 {% endblock %}
 
 
 {% block content %}
     {{ super() }}
 
-    <div id="welcome-wrapper">
-        <h3 class="center-align">Welcome to The Hostery.</h3>
+    <div id="hero-wrapper">
+        <h3 id="welcome-text" class="center-align">Welcome to The Hostery.</h3>
+
+        <p class="center-align">
+            Enter the coordinates of your potential new Airbnb property, and let The Hostery do the rest.
+        </p>
+
+        <!-- Search form -->
         <div class="row">
             <form id="search-form" action="data" method="GET">
                 <div class="col s12 m10 offset-m1 l8 offset-l2">
                     <div class="input-field col s6">
                         <input name="latitude" id="search-latitude" type="text" class="validate" required>
-                        <label for="search-latitude">Latitude</label>
+                        <label for="search-latitude">Latitude &deg;</label>
                     </div>
                     <div class="input-field col s6">
                         <input name="longitude" id="search-longitude" type="text" class="validate" required>
-                        <label for="search-longitude">Longitude</label>
+                        <label for="search-longitude">Longitude &deg;</label>
                     </div>
+                    <input type="submit" class="hide">
                 </div>
             </form>
+        </div>
+
+        <!-- Loading text and spinner -->
+        <div class="center-align">
+            <span id="loading-text">Optimizing your profits&hellip;</span>
+            <div class="preloader-wrapper small">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
