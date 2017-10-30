@@ -38,12 +38,14 @@ def data():
             place = {"formatted_address": None, "place_id": None}
 
         closest_listing = data_processing.get_closest_listing(lat, lng)
+        neighborhood = closest_listing["host_neighbourhood"]
 
         context = {
             "gmaps_api_key": secret.GMAPS_API_KEY,
             "weekly_avg_income": data_processing.get_weekly_avg_income(lat, lng),
             "max_bookings_price": data_processing.get_max_bookings_price(lat, lng),
-            "neighborhood_avg_price": data_processing.get_neighborhood_avg_price(closest_listing["host_neighbourhood"]),
+            "neighborhood_avg_price": data_processing.get_neighborhood_avg_price(neighborhood),
+            "neighborhood_metrics": data_processing.get_neighborhood_metrics(neighborhood),
             "formatted_address": place["formatted_address"],
             "place_id": place["place_id"],
         }

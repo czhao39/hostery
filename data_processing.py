@@ -16,6 +16,10 @@ def price_str_to_float(price_str):
     return float(price_str[1:].replace(',', ''))
 
 
+def round_to(num, dec_places):
+    return round(num * 10**dec_places) / (10**dec_places)
+
+
 """
 Returns a listing object given a latitude (lat) and longitude (lng).
 """
@@ -76,10 +80,45 @@ def get_neighborhood_avg_price(neighborhood, min_listings=4):
 
 
 """
-Returns the data array used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods.
+Returns the data object used by Chart.js to generate the Neighborhood Data radar chart for a given neighborhood.
+"""
+def get_neighborhood_metrics(neighborhood):
+    METRICS = ["accommodates", "bathrooms", "bedrooms", "beds", "guests_included"]
+
+    labels = [metric.replace('_', ' ').capitalize() for metric in METRICS]
+    data = []
+    # A list where each item is a metric's [num_listings, total]
+    # Used for computing averages
+    metric_data = [[0, 0] for _ in METRICS]
+    for listing in listings:
+        if listing["host_neighbourhood"] != neighborhood:
+            continue
+        for m in range(len(METRICS)):
+            if len(listing[METRICS[m]]) == 0:
+                continue
+            metric_data[m][0] += 1
+            metric_data[m][1] += float(listing[METRICS[m]])
+    data = [round_to(metric[1] / metric[0], 2) if metric[0] > 0 else 0 for metric in metric_data]
+
+    return {
+            "labels": labels,
+            "datasets": [{
+                "data": data,
+                "pointRadius": 5,
+                "pointHoverRadius": 10,
+                "pointHitRadius": 15,
+                "pointBackgroundColor": "rgba(41, 98, 255, 0.5)",
+                "backgroundColor": "rgba(33, 150, 243, 0.5)",
+            }],
+        }
+
+
+"""
+Returns the data object used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods.
 """
 def get_price_vs_neighborhood_data(num_neighborhoods=10):
     # A dictionary mapping each neighborhood to [num_listings, total_price]
+    # Used for computing averages
     neighborhood_data = {}
     for listing in listings:
         neighborhood = listing["host_neighbourhood"]
@@ -93,21 +132,17 @@ def get_price_vs_neighborhood_data(num_neighborhoods=10):
 
     popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
 
-    labels = []
-    data = []
-    for neighborhood in popular_neighborhoods:
-        avg_price = neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0]
-        avg_price = round(avg_price * 100) / 100
-        labels.append(neighborhood)
-        data.append(avg_price)
+    labels = [neighborhood for neighborhood in popular_neighborhoods]
+    data = [round_to(neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0], 2) for neighborhood in popular_neighborhoods]
+
     return {
             "labels": labels,
             "datasets": [{
                 "label": "Average Price ($)",
                 "data": data,
                 "backgroundColor": "rgba(33, 150, 243, 0.5)",
-                }],
-            }
+            }],
+        }
 
 
 """

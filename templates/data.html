@@ -5,6 +5,17 @@
     {{ super() }}
 
     <link rel="stylesheet" href="/css/data.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" integrity="sha256-c0m8xzX5oOBawsnLVpHnU2ieISOvxi584aNElFl2W6M=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/data.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+            Chart.defaults.global.defaultFontColor = "black";
+            Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.5)";
+            create_neighborhood_chart({{ neighborhood_metrics | tojson }});
+        });
+    </script>
 {% endblock %}
 
 
@@ -19,5 +30,10 @@
         <p><strong>Estimated weekly average income per hostee:</strong>&ensp;{{ weekly_avg_income | format_money }}</p>
         <p><strong>Optimal nightly price:</strong>&ensp;{{ max_bookings_price | format_money }}</p>
         <p><strong>Neighborhood average price:</strong>&ensp;{{ neighborhood_avg_price | format_money }}</p>
+    </div>
+
+    <div class="card-panel z-depth-2">
+        <h4>Hostery SmartCharts</h4>
+        <canvas id="neighborhood_chart" class="chart"></canvas>
     </div>
 {% endblock %}
