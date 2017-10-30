@@ -49,6 +49,14 @@ def data():
         return redirect("/")
 
 
+@app.route("/analytics")
+def analytics():
+    context = {
+        "price_vs_neighborhood_data": data_processing.get_price_vs_neighborhood_data(),
+    }
+    return render_template("analytics.html", **context)
+
+
 if __name__ == "__main__":
     import sys
     app.run(host="0.0.0.0", port=int(sys.argv[1]) if len(sys.argv) > 1 else 8080, threaded=True)

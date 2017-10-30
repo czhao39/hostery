@@ -1,11 +1,11 @@
 $(document).ready(function() {
     $("#search-form").submit(function(event) {
-        start_preloader();
-    })
+        start_loader();
+    });
 });
 
 
-function start_preloader() {
+function start_loader() {
     $(".preloader-wrapper").addClass("active");
     $(".loading-text").fadeIn();
 }

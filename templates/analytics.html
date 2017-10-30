@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" href="/css/analytics.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" integrity="sha256-c0m8xzX5oOBawsnLVpHnU2ieISOvxi584aNElFl2W6M=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            create_price_vs_neighborhood_chart({{ price_vs_neighborhood_data | tojson }});
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    {{ super() }}
+
+    <h4>San Francisco Airbnb Analytics</h4>
+
+    <!-- Average Price vs. Neighborhood chart -->
+    <div class="section">
+        <h5 class="center-align">Average Prices of the Most Popular Neighborhoods</h5>
+        <canvas id="price_vs_neighborhood_chart" class="chart"></canvas>
+    </div>
+{% endblock %}

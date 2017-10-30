@@ -19,6 +19,40 @@ def price_str_to_float(price_str):
 
 
 """
+Returns the data array used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods.
+"""
+def get_price_vs_neighborhood_data(num_neighborhoods=10):
+    # A dictionary mapping each neighborhood to [num_listings, total_price]
+    neighborhood_data = {}
+    for listing in listings:
+        neighborhood = listing["host_neighbourhood"]
+        if not neighborhood:
+            continue
+        if neighborhood not in neighborhood_data:
+            neighborhood_data[neighborhood] = [1, price_str_to_float(listing["price"])]
+        else:
+            neighborhood_data[neighborhood][0] += 1
+            neighborhood_data[neighborhood][1] += price_str_to_float(listing["price"])
+
+    popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
+
+    labels = []
+    data = []
+    for neighborhood in popular_neighborhoods:
+        avg_price = neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0]
+        avg_price = round(avg_price * 100) / 100
+        labels.append(neighborhood)
+        data.append(avg_price)
+    return {
+            "labels": labels,
+            "datasets": [{
+                "label": "Average Price ($)",
+                "data": data,
+            }],
+    }
+
+
+"""
 Returns a listing object given a latitude (lat) and longitude (lng).
 Returns None if the listing is not found.
 """
