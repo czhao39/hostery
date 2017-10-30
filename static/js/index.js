@@ -7,5 +7,5 @@ $(document).ready(function() {
 
 function start_preloader() {
     $(".preloader-wrapper").addClass("active");
-    $("#loading-text").fadeIn();
+    $(".loading-text").fadeIn(500);
 }

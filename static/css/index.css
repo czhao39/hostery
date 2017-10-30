@@ -6,6 +6,13 @@
     margin-bottom: 2rem;
 }
 
-#loading-text {
+.loading-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-text {
     display: none;
+    margin-left: 10px;
 }
