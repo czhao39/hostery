@@ -1,8 +1,19 @@
 {% extends "layout.html" %}
 
+
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" href="/css/data.css" />
+{% endblock %}
+
+
 {% block content %}
     {{ super() }}
 
-    Price estimation: {{ weekly_avg_income }}
-    Bookings optimization: {{ max_bookings_price }}
+    <h4>{{ formatted_address }}</h4>
+    <iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ gmaps_api_key }}" allowfullscreen></iframe>
+
+    <p><strong>Estimated weekly average income per hostee:</strong>&ensp;{{ weekly_avg_income | format_money }}</p>
+    <p><strong>Optimal nightly price:</strong>&ensp;{{ max_bookings_price | format_money }}</p>
 {% endblock %}
