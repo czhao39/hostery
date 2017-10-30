@@ -3,8 +3,6 @@ import heapq
 import csv
 
 
-# The tolerance allowed in assuming two coordinates are the same
-COORD_TOLERANCE = 0.00001
 LISTINGS_PATH = "airbnb-sep-2017/listings.csv"
 with open(LISTINGS_PATH) as listings_csv:
     listings = [listing for listing in csv.DictReader(listings_csv)]
@@ -19,51 +17,10 @@ def price_str_to_float(price_str):
 
 
 """
-Returns the data array used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods.
-"""
-def get_price_vs_neighborhood_data(num_neighborhoods=10):
-    # A dictionary mapping each neighborhood to [num_listings, total_price]
-    neighborhood_data = {}
-    for listing in listings:
-        neighborhood = listing["host_neighbourhood"]
-        if not neighborhood:
-            continue
-        if neighborhood not in neighborhood_data:
-            neighborhood_data[neighborhood] = [1, price_str_to_float(listing["price"])]
-        else:
-            neighborhood_data[neighborhood][0] += 1
-            neighborhood_data[neighborhood][1] += price_str_to_float(listing["price"])
-
-    popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
-
-    labels = []
-    data = []
-    for neighborhood in popular_neighborhoods:
-        avg_price = neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0]
-        avg_price = round(avg_price * 100) / 100
-        labels.append(neighborhood)
-        data.append(avg_price)
-    return {
-            "labels": labels,
-            "datasets": [{
-                "label": "Average Price ($)",
-                "data": data,
-                "backgroundColor": "rgba(33, 150, 243, 0.5)",
-            }],
-    }
-
-
-"""
 Returns a listing object given a latitude (lat) and longitude (lng).
-Returns None if the listing is not found.
 """
-def get_listing(lat, lng):
-    for listing in listings:
-        if abs(float(listing["latitude"]) - lat) < COORD_TOLERANCE and abs(float(listing["longitude"]) - lng) < COORD_TOLERANCE:
-            return listing
-
-    # Couldn't find a listing with the given coordinates
-    return None
+def get_closest_listing(lat, lng):
+    return min(listings, key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
 
 
 """
@@ -99,6 +56,58 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
         return get_weekly_avg_income(lat, lng, 1) / 7
 
     return price_estimate
+
+
+"""
+Returns the average price in the given neighborhood.
+"""
+def get_neighborhood_avg_price(neighborhood, min_listings=4):
+    num_listings = 0
+    total_price = 0
+    for listing in listings:
+        if listing["host_neighbourhood"] == neighborhood:
+            num_listings += 1
+            total_price += price_str_to_float(listing["price"])
+
+    if num_listings < min_listings:
+        return None
+
+    return total_price / num_listings
+
+
+"""
+Returns the data array used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods.
+"""
+def get_price_vs_neighborhood_data(num_neighborhoods=10):
+    # A dictionary mapping each neighborhood to [num_listings, total_price]
+    neighborhood_data = {}
+    for listing in listings:
+        neighborhood = listing["host_neighbourhood"]
+        if not neighborhood:
+            continue
+        if neighborhood not in neighborhood_data:
+            neighborhood_data[neighborhood] = [1, price_str_to_float(listing["price"])]
+        else:
+            neighborhood_data[neighborhood][0] += 1
+            neighborhood_data[neighborhood][1] += price_str_to_float(listing["price"])
+
+    popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
+
+    labels = []
+    data = []
+    for neighborhood in popular_neighborhoods:
+        avg_price = neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0]
+        avg_price = round(avg_price * 100) / 100
+        labels.append(neighborhood)
+        data.append(avg_price)
+    return {
+            "labels": labels,
+            "datasets": [{
+                "label": "Average Price ($)",
+                "data": data,
+                "backgroundColor": "rgba(33, 150, 243, 0.5)",
+                }],
+            }
 
 
 """

@@ -13,6 +13,8 @@ app.secret_key = secret.SECRET_KEY
 
 @app.template_filter()
 def format_money(m):
+    if m is None:
+        return "Insufficient data"
     return "${:,.2f}".format(m)
 
 
@@ -35,10 +37,13 @@ def data():
         else:
             place = {"formatted_address": None, "place_id": None}
 
+        closest_listing = data_processing.get_closest_listing(lat, lng)
+
         context = {
             "gmaps_api_key": secret.GMAPS_API_KEY,
             "weekly_avg_income": data_processing.get_weekly_avg_income(lat, lng),
             "max_bookings_price": data_processing.get_max_bookings_price(lat, lng),
+            "neighborhood_avg_price": data_processing.get_neighborhood_avg_price(closest_listing["host_neighbourhood"]),
             "formatted_address": place["formatted_address"],
             "place_id": place["place_id"],
         }
