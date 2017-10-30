@@ -7,7 +7,7 @@ import csv
 COORD_TOLERANCE = 0.00001
 LISTINGS_PATH = "airbnb-sep-2017/listings.csv"
 with open(LISTINGS_PATH) as listings_csv:
-    listings = [prop for prop in csv.DictReader(listings_csv)]
+    listings = [listing for listing in csv.DictReader(listings_csv)]
 
 
 def get_dist_squared(lat1, lng1, lat2, lng2):
@@ -19,48 +19,47 @@ def price_str_to_float(price_str):
 
 
 """
-Returns a property object given a latitude (lat) and longitude (lng).
-Returns None if the property is not found.
+Returns a listing object given a latitude (lat) and longitude (lng).
+Returns None if the listing is not found.
 """
-def get_property(lat, lng):
-    for prop in listings:
-        if abs(float(prop["latitude"]) - lat) < COORD_TOLERANCE and abs(float(prop["longitude"]) - lng) < COORD_TOLERANCE:
-            return prop
+def get_listing(lat, lng):
+    for listing in listings:
+        if abs(float(listing["latitude"]) - lat) < COORD_TOLERANCE and abs(float(listing["longitude"]) - lng) < COORD_TOLERANCE:
+            return listing
 
-    # Couldn't find the property with the given coordinates
+    # Couldn't find a listing with the given coordinates
     return None
 
 
 """
-Given the latitude and longitude of a new property, estimates the average weekly income per hostee by averaging the prices of the n closest properties.
+Given the latitude and longitude of a new listing, estimates the average weekly income per hostee by averaging the prices of the n closest listings.
 """
 def get_weekly_avg_income(lat, lng, n=4):
-    props = []
-    for prop in listings:
-        dist_sq = get_dist_squared(lat, lng, float(prop["latitude"]), float(prop["longitude"]))
-        price = price_str_to_float(prop["price"])
-        props.append((dist_sq, price))
-    n_closest = heapq.nsmallest(n, props)
+    listings_by_dist = []
+    for listing in listings:
+        dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
+        price = price_str_to_float(listing["price"])
+        listings_by_dist.append((dist_sq, price))
+    n_closest = heapq.nsmallest(n, listings_by_dist)
 
-    return sum(prop[1] for prop in n_closest) / n * 7
+    return sum(listing[1] for listing in n_closest) / n * 7
 
 
 """
-Given the latitude and longitude of a property, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
+Given the latitude and longitude of a listingerty, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
 """
 def get_max_bookings_price(lat, lng, dist_range=0.5):
     dist_range_sq = dist_range**2
-    props = []
     price_estimate = 1 << 32
-    for prop in listings:
-        price = price_str_to_float(prop["price"])
+    for listing in listings:
+        price = price_str_to_float(listing["price"])
         if price >= price_estimate:
             continue
-        dist_sq = get_dist_squared(lat, lng, float(prop["latitude"]), float(prop["longitude"]))
+        dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
         if dist_sq <= dist_range_sq:
             price_estimate = price
 
-    # If no properties within dist_range away, return the price of the closest property
+    # If no listings within dist_range away, return the price of the closest listing
     if price_estimate == 1 << 32:
         return get_weekly_avg_income(lat, lng, 1) / 7
 
@@ -71,5 +70,5 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
 For testing purposes.
 """
 if __name__ == "__main__":
-    prop = get_property(37.7541839478958, -122.406513787399)
-    print(prop.keys())
+    listing = get_listing(37.7541839478958, -122.406513787399)
+    print(listing.keys())

@@ -30,7 +30,6 @@ def data():
             "latlng": "{},{}".format(lat, lng),
             "key": secret.GMAPS_API_KEY,
         }).json()
-        print(r)
         if r["results"]:
             place = r["results"][0]
         else:
