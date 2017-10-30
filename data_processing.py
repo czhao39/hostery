@@ -12,6 +12,10 @@ def get_dist_squared(lat1, lng1, lat2, lng2):
     return (lat1 - lat2)**2 + (lng1 - lng2)**2
 
 
+def price_str_to_float(price_str):
+    return float(price_str[1:].replace(',', ''))
+
+
 """
 Returns a property object given a latitude (lat) and longitude (lng).
 Returns None if the property is not found.
@@ -35,8 +39,8 @@ def get_weekly_avg_income(lat, lng, n=4):
     with open(LISTINGS_PATH) as listings_csv:
         listings = csv.DictReader(listings_csv)
         for prop in listings:
-            dist_sq = get_distance_squared(lat, lng, float(prop["latitude"]), float(prop["longitude"]))
-            price = float(prop["price"][1:])
+            dist_sq = get_dist_squared(lat, lng, float(prop["latitude"]), float(prop["longitude"]))
+            price = price_str_to_float(prop["price"])
             props.append((dist_sq, price))
     n_closest = heapq.nsmallest(n, props)
 
@@ -53,15 +57,16 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
     with open(LISTINGS_PATH) as listings_csv:
         listings = csv.DictReader(listings_csv)
         for prop in listings:
-            if prop["price"] >= price_estimate:
+            price = price_str_to_float(prop["price"])
+            if price >= price_estimate:
                 continue
-            dist_sq = get_distance_squared(lat, lng, float(prop["latitude"]), float(prop["longitude"]))
+            dist_sq = get_dist_squared(lat, lng, float(prop["latitude"]), float(prop["longitude"]))
             if dist_sq <= dist_range_sq:
-                price_estimate = prop["price"]
+                price_estimate = price
 
     # If no properties within dist_range away, return the price of the closest property
-    if price_estimate <= 0:
-        return estimate_weekly_income(lat, lng, 1) / 7
+    if price_estimate == 1 << 32:
+        return get_weekly_avg_income(lat, lng, 1) / 7
 
     return price_estimate
 

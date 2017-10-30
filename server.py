@@ -2,7 +2,7 @@
 
 from flask import *
 import secret
-import data
+import data_processing
 import traceback
 
 
@@ -20,8 +20,8 @@ def data():
         lat = float(request.args.get("latitude"))
         lng = float(request.args.get("longitude"))
         context = {
-            "weekly_avg_income": data.get_weekly_avg_income(lat, lng),
-            "max_bookings_price": data.get_max_bookings_price(lat, lng),
+            "weekly_avg_income": data_processing.get_weekly_avg_income(lat, lng),
+            "max_bookings_price": data_processing.get_max_bookings_price(lat, lng),
         }
         return render_template("data.html", **context)
     except:
