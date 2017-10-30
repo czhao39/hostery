@@ -10,6 +10,9 @@
     <script type="text/javascript" src="/js/analytics.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+            Chart.defaults.global.defaultFontColor = "black";
+            Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.1)";
             create_price_vs_neighborhood_chart({{ price_vs_neighborhood_data | tojson }});
         });
     </script>
@@ -23,7 +26,6 @@
 
     <!-- Average Price vs. Neighborhood chart -->
     <div class="section">
-        <h5 class="center-align">Average Prices of the Most Popular Neighborhoods</h5>
         <canvas id="price_vs_neighborhood_chart" class="chart"></canvas>
     </div>
 {% endblock %}

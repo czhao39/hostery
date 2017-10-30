@@ -48,6 +48,7 @@ def get_price_vs_neighborhood_data(num_neighborhoods=10):
             "datasets": [{
                 "label": "Average Price ($)",
                 "data": data,
+                "backgroundColor": "rgba(33, 150, 243, 0.5)",
             }],
     }
 
