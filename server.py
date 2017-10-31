@@ -42,12 +42,13 @@ def data():
 
         context = {
             "gmaps_api_key": secret.GMAPS_API_KEY,
+            "formatted_address": place["formatted_address"],
+            "place_id": place["place_id"],
             "weekly_avg_income": data_processing.get_weekly_avg_income(lat, lng),
             "max_bookings_price": data_processing.get_max_bookings_price(lat, lng),
             "neighborhood_avg_price": data_processing.get_neighborhood_avg_price(neighborhood),
             "neighborhood_metrics": data_processing.get_neighborhood_metrics(neighborhood),
-            "formatted_address": place["formatted_address"],
-            "place_id": place["place_id"],
+            "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(neighborhood),
         }
         return render_template("data.html", **context)
     except:

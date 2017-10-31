@@ -21,10 +21,10 @@ def round_to(num, dec_places):
 
 
 """
-Returns a listing object given a latitude (lat) and longitude (lng).
+Returns the closest listing with a defined neighborhood given a latitude (lat) and longitude (lng).
 """
 def get_closest_listing(lat, lng):
-    return min(listings, key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
+    return min((listing for listing in listings if listing["host_neighbourhood"]), key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
 
 
 """
@@ -49,7 +49,7 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
     price_estimate = 1 << 32
     for listing in listings:
         price = price_str_to_float(listing["price"])
-        if price >= price_estimate:
+        if not price or price >= price_estimate:
             continue
         dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
         if dist_sq <= dist_range_sq:
@@ -101,16 +101,16 @@ def get_neighborhood_metrics(neighborhood):
     data = [round_to(metric[1] / metric[0], 2) if metric[0] > 0 else 0 for metric in metric_data]
 
     return {
-            "labels": labels,
-            "datasets": [{
-                "data": data,
-                "pointRadius": 5,
-                "pointHoverRadius": 10,
-                "pointHitRadius": 15,
-                "pointBackgroundColor": "rgba(41, 98, 255, 0.5)",
-                "backgroundColor": "rgba(33, 150, 243, 0.5)",
-            }],
-        }
+        "labels": labels,
+        "datasets": [{
+            "data": data,
+            "pointRadius": 5,
+            "pointHoverRadius": 10,
+            "pointHitRadius": 15,
+            "pointBackgroundColor": "rgba(41, 98, 255, 0.5)",
+            "backgroundColor": "rgba(33, 150, 243, 0.5)",
+        }],
+    }
 
 
 """
@@ -136,13 +136,57 @@ def get_price_vs_neighborhood_data(num_neighborhoods=10):
     data = [round_to(neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0], 2) for neighborhood in popular_neighborhoods]
 
     return {
-            "labels": labels,
-            "datasets": [{
-                "label": "Average Price ($)",
-                "data": data,
-                "backgroundColor": "rgba(33, 150, 243, 0.5)",
-            }],
-        }
+        "labels": labels,
+        "datasets": [{
+            "label": "Average Price ($)",
+            "data": data,
+            "backgroundColor": "rgba(33, 150, 243, 0.5)",
+        }],
+    }
+
+
+"""
+Returns the data object used by Chart.js to generate a Number of Listings per Neighborhood doughnut chart for the most popular neighborhoods, as well as the given neighborhood.
+"""
+def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
+    if len(query_neighborhood) == 0:
+        query_neighborhood = None
+    # A dictionary mapping each neighborhood to the number of listings in that neighborhood.
+    neighborhood_counts = {}
+    query_neighborhood_count = 0
+    for listing in listings:
+        neighborhood = listing["host_neighbourhood"]
+        if not neighborhood:
+            continue
+        if neighborhood == query_neighborhood:
+            query_neighborhood_count += 1
+        elif neighborhood not in neighborhood_counts:
+            neighborhood_counts[neighborhood] = 1
+        else:
+            neighborhood_counts[neighborhood] += 1
+
+    if query_neighborhood is None or query_neighborhood_count == 0:
+        popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_counts, key=neighborhood_counts.get)
+        chart_color = "rgba(33, 150, 243, 0.5)"
+    else:
+        popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_counts, key=neighborhood_counts.get)
+        popular_neighborhoods.append(query_neighborhood)
+        neighborhood_counts[query_neighborhood] = query_neighborhood_count
+        chart_color = ["rgba(33, 150, 243, 0.5)"] * (num_neighborhoods - 1)
+        # Have the query neighborhood be an accent color
+        chart_color.append("rgba(41, 98, 255, 0.5)")
+
+    labels = [neighborhood for neighborhood in popular_neighborhoods]
+    data = [neighborhood_counts[neighborhood] for neighborhood in popular_neighborhoods]
+
+    return {
+        "labels": labels,
+        "datasets": [{
+            "label": "Number of Listings",
+            "data": data,
+            "backgroundColor": chart_color,
+        }],
+    }
 
 
 """
