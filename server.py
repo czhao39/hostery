@@ -49,6 +49,7 @@ def data():
             "neighborhood_avg_price": data_processing.get_neighborhood_avg_price(neighborhood),
             "neighborhood_metrics": data_processing.get_neighborhood_metrics(neighborhood),
             "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(neighborhood),
+            "price_distribution": data_processing.get_price_distribution_data(neighborhood),
         }
         return render_template("data.html", **context)
     except:

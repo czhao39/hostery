@@ -55,3 +55,33 @@ function create_listings_per_neighborhood_chart(data) {
     });
 }
 
+/*
+ * Create the Price Distribution histogram
+ */
+function create_price_distribution_chart(data) {
+    let context = $("#price_distribution_chart");
+
+    let options = {
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: "Price Distribution",
+            fontSize: 28,
+            fontStyle: "normal"
+        },
+        scales: {
+            xAxes: [{
+                barPercentage: 1.0,
+                categoryPercentage: 1.0,
+            }],
+        },
+    };
+
+    let chart = new Chart(context, {
+        type: "bar",
+        data: data,
+        options: options,
+    });
+}

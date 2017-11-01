@@ -151,6 +151,7 @@ Returns the data object used by Chart.js to generate a Number of Listings per Ne
 def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
     if len(query_neighborhood) == 0:
         query_neighborhood = None
+
     # A dictionary mapping each neighborhood to the number of listings in that neighborhood.
     neighborhood_counts = {}
     query_neighborhood_count = 0
@@ -185,6 +186,38 @@ def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhood
             "label": "Number of Listings",
             "data": data,
             "backgroundColor": chart_color,
+        }],
+    }
+
+
+"""
+Returns the data object used by Chart.js to generate a price distribution histogram for the given query_neighborhood if specified, or all neighborhoods if unspecified.
+"""
+def get_price_distribution_data(query_neighborhood=None, interval_size=50):
+    if len(query_neighborhood) == 0:
+        query_neighborhood = None
+
+    # A dictionary mapping interval start points to frequencies
+    distribution = {}
+    for listing in listings:
+        if query_neighborhood is not None and listing["host_neighbourhood"] != query_neighborhood:
+            continue
+        interval_start = int(price_str_to_float(listing["price"]) // interval_size * interval_size)
+        if interval_start not in distribution:
+            distribution[interval_start] = 1
+        else:
+            distribution[interval_start] += 1
+
+    sorted_intervals = sorted(distribution.keys())
+    labels = [u"${}\u2013${}".format(interval_start, interval_start+interval_size-1) for interval_start in sorted_intervals]
+    data = [distribution[interval_start] for interval_start in sorted_intervals]
+
+    return {
+        "labels": labels,
+        "datasets": [{
+            "label": "Number of Listings",
+            "data": data,
+            "backgroundColor": "rgba(33, 150, 243, 0.5)",
         }],
     }
 

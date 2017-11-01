@@ -15,6 +15,7 @@
             Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.5)";
             create_neighborhood_chart({{ neighborhood_metrics | tojson }});
             create_listings_per_neighborhood_chart({{ listings_per_neighborhood | tojson }});
+            create_price_distribution_chart({{ price_distribution | tojson }});
         });
     </script>
 {% endblock %}
@@ -37,5 +38,6 @@
         <h4>Hostery SmartCharts</h4>
         <canvas id="neighborhood_chart" class="chart"></canvas>
         <canvas id="listings_per_neighborhood_chart" class="chart"></canvas>
+        <canvas id="price_distribution_chart" class="chart"></canvas>
     </div>
 {% endblock %}
