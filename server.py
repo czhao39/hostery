@@ -6,7 +6,6 @@ import traceback
 import secret
 import data_processing
 
-
 app = Flask(__name__, static_url_path="")
 app.secret_key = secret.SECRET_KEY
 
@@ -28,7 +27,7 @@ def data():
     try:
         lat = float(request.args.get("latitude"))
         lng = float(request.args.get("longitude"))
-        r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params = {
+        r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params={
             "latlng": "{},{}".format(lat, lng),
             "key": secret.GMAPS_API_KEY,
         }).json()
@@ -68,4 +67,5 @@ def analytics():
 
 if __name__ == "__main__":
     import sys
+
     app.run(host="0.0.0.0", port=int(sys.argv[1]) if len(sys.argv) > 1 else 8080, threaded=True)

@@ -2,14 +2,13 @@ import sys
 import heapq
 import csv
 
-
 LISTINGS_PATH = "airbnb-sep-2017/listings.csv"
 with open(LISTINGS_PATH) as listings_csv:
     listings = [listing for listing in csv.DictReader(listings_csv)]
 
 
 def get_dist_squared(lat1, lng1, lat2, lng2):
-    return (lat1 - lat2)**2 + (lng1 - lng2)**2
+    return (lat1 - lat2) ** 2 + (lng1 - lng2) ** 2
 
 
 def price_str_to_float(price_str):
@@ -17,19 +16,24 @@ def price_str_to_float(price_str):
 
 
 def round_to(num, dec_places):
-    return round(num * 10**dec_places) / (10**dec_places)
+    return round(num * 10 ** dec_places) / (10 ** dec_places)
 
 
 """
 Returns the closest listing with a defined neighborhood given a latitude (lat) and longitude (lng).
 """
+
+
 def get_closest_listing(lat, lng):
-    return min((listing for listing in listings if listing["host_neighbourhood"]), key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
+    return min((listing for listing in listings if listing["host_neighbourhood"]),
+               key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
 
 
 """
 Given the latitude and longitude of a new listing, estimates the average weekly income per hostee by averaging the prices of the n closest listings.
 """
+
+
 def get_weekly_avg_income(lat, lng, n=4):
     listings_by_dist = []
     for listing in listings:
@@ -44,8 +48,10 @@ def get_weekly_avg_income(lat, lng, n=4):
 """
 Given the latitude and longitude of a listingerty, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
 """
+
+
 def get_max_bookings_price(lat, lng, dist_range=0.5):
-    dist_range_sq = dist_range**2
+    dist_range_sq = dist_range ** 2
     price_estimate = 1 << 32
     for listing in listings:
         price = price_str_to_float(listing["price"])
@@ -65,6 +71,8 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
 """
 Returns the average price in the given neighborhood.
 """
+
+
 def get_neighborhood_avg_price(neighborhood, min_listings=4):
     num_listings = 0
     total_price = 0
@@ -82,6 +90,8 @@ def get_neighborhood_avg_price(neighborhood, min_listings=4):
 """
 Returns the data object used by Chart.js to generate the Neighborhood Data radar chart for a given neighborhood.
 """
+
+
 def get_neighborhood_metrics(neighborhood):
     METRICS = ["accommodates", "bathrooms", "bedrooms", "beds", "guests_included"]
 
@@ -116,6 +126,8 @@ def get_neighborhood_metrics(neighborhood):
 """
 Returns the data object used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods.
 """
+
+
 def get_price_vs_neighborhood_data(num_neighborhoods=10):
     # A dictionary mapping each neighborhood to [num_listings, total_price]
     # Used for computing averages
@@ -133,7 +145,8 @@ def get_price_vs_neighborhood_data(num_neighborhoods=10):
     popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
 
     labels = [neighborhood for neighborhood in popular_neighborhoods]
-    data = [round_to(neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0], 2) for neighborhood in popular_neighborhoods]
+    data = [round_to(neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0], 2) for neighborhood in
+            popular_neighborhoods]
 
     return {
         "labels": labels,
@@ -148,6 +161,8 @@ def get_price_vs_neighborhood_data(num_neighborhoods=10):
 """
 Returns the data object used by Chart.js to generate a Number of Listings per Neighborhood doughnut chart for the most popular neighborhoods, as well as the given neighborhood.
 """
+
+
 def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
     if len(query_neighborhood) == 0:
         query_neighborhood = None
@@ -193,6 +208,8 @@ def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhood
 """
 Returns the data object used by Chart.js to generate a price distribution histogram for the given query_neighborhood if specified, or all neighborhoods if unspecified.
 """
+
+
 def get_price_distribution_data(query_neighborhood=None, interval_size=50):
     if len(query_neighborhood) == 0:
         query_neighborhood = None
@@ -209,7 +226,8 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
             distribution[interval_start] += 1
 
     sorted_intervals = sorted(distribution.keys())
-    labels = [u"${}\u2013${}".format(interval_start, interval_start+interval_size-1) for interval_start in sorted_intervals]
+    labels = [u"${}\u2013${}".format(interval_start, interval_start + interval_size - 1) for interval_start in
+              sorted_intervals]
     data = [distribution[interval_start] for interval_start in sorted_intervals]
 
     return {

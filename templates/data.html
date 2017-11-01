@@ -4,12 +4,13 @@
 {% block head %}
     {{ super() }}
 
-    <link rel="stylesheet" href="/css/data.css" />
+    <link rel="stylesheet" href="/css/data.css"/>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" integrity="sha256-c0m8xzX5oOBawsnLVpHnU2ieISOvxi584aNElFl2W6M=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"
+            integrity="sha256-c0m8xzX5oOBawsnLVpHnU2ieISOvxi584aNElFl2W6M=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/data.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
             Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.5)";
@@ -25,7 +26,9 @@
     {{ super() }}
 
     <h4>{{ formatted_address }}</h4>
-    <iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ gmaps_api_key }}" allowfullscreen></iframe>
+    <iframe class="map"
+            src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ gmaps_api_key }}"
+            allowfullscreen></iframe>
 
     <div class="card-panel z-depth-2">
         <h4>Hostery SmartMetrics</h4>

@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        {% block head %}
+<head>
+    {% block head %}
         <title>The Hostery | Maximize Your Airbnb Income</title>
 
         <!-- CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        <link rel="stylesheet" href="/css/layout.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
+              integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        <link rel="stylesheet" href="/css/layout.css"/>
 
         <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
         <meta name="theme-color" content="#2196f3">
 
         <!-- Scripts -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js" integrity="sha256-uWtSXRErwH9kdJTIr1swfHFJn/d/WQ6s72gELOHXQGM=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"
+                integrity="sha256-uWtSXRErwH9kdJTIr1swfHFJn/d/WQ6s72gELOHXQGM=" crossorigin="anonymous"></script>
 
-        {% endblock %}
-    </head>
+    {% endblock %}
+</head>
 
-    <body>
-        <!-- Navbar -->
-        <div class="navbar-fixed">
-            <nav class="blue">
-                <div class="nav-wrapper">
-                    {% block nav %}
-                    <a class="brand-logo center" href="/"><i class="material-icons">home</i>The Hostery</a>
-                    <ul id="nav-mobile" class="right">
-                        <li><a href="/analytics" title="Analytics"><i class="material-icons">insert_chart</i></a></li>
-                    </ul>
-                    {% endblock %}
-                </div>
-            </nav>
-        </div>
-
-        <!-- Content -->
-        <div id="content" class="container">
-            {% block content %}
+<body>
+<!-- Navbar -->
+<div class="navbar-fixed">
+    <nav class="blue">
+        <div class="nav-wrapper">
+            {% block nav %}
+                <a class="brand-logo center" href="/"><i class="material-icons">home</i>The Hostery</a>
+                <ul id="nav-mobile" class="right">
+                    <li><a href="/analytics" title="Analytics"><i class="material-icons">insert_chart</i></a></li>
+                </ul>
             {% endblock %}
+        </div>
+    </nav>
+</div>
 
-            <!-- Alerts (e.g. errors) -->
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
+<!-- Content -->
+<div id="content" class="container">
+    {% block content %}
+    {% endblock %}
+
+    <!-- Alerts (e.g. errors) -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
             <div class="alerts">
                 {% for message in messages %}
-                <div class="alert center-align">{{ message }}</div>
+                    <div class="alert center-align">{{ message }}</div>
                 {% endfor %}
             </div>
-            {% endif %}
-            {% endwith %}
-        </div>
+        {% endif %}
+    {% endwith %}
+</div>
 
-    </body>
+</body>
 </html>
