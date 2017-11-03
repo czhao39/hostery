@@ -14,7 +14,7 @@
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
             Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.1)";
-            create_price_vs_neighborhood_chart({{ price_vs_neighborhood_data | tojson }});
+            create_price_vs_neighborhood_chart("price_vs_neighborhood_chart", {{ price_vs_neighborhood_data | tojson }});
         });
     </script>
 {% endblock %}

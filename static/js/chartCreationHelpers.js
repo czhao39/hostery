@@ -5,10 +5,12 @@
 
 /*
  * Create the neighborhood radar chart
+ *
+ * @param {String} context
+ * @param {Object} data
+ * @return {void}
  */
-function create_neighborhood_chart(data) {
-    let context = $("#neighborhood_chart");
-
+function create_neighborhood_chart(context, data) {
     let options = {
         legend: {
             display: false
@@ -37,10 +39,12 @@ function create_neighborhood_chart(data) {
 
 /*
  * Create the listings per neighborhood doughnut chart
+ *
+ * @param {String} context
+ * @param {Object} data
+ * @return {void}
  */
-function create_listings_per_neighborhood_chart(data) {
-    let context = $("#listings_per_neighborhood_chart");
-
+function create_listings_per_neighborhood_chart(context, data) {
     let options = {
         legend: {
             display: false
@@ -62,10 +66,12 @@ function create_listings_per_neighborhood_chart(data) {
 
 /*
  * Create the Price Distribution histogram
+ *
+ * @param {String} context
+ * @param {Object} data
+ * @return {void}
  */
-function create_price_distribution_chart(data) {
-    let context = $("#price_distribution_chart");
-
+function create_price_distribution_chart(context, data) {
     let options = {
         legend: {
             display: false
@@ -93,10 +99,12 @@ function create_price_distribution_chart(data) {
 
 /*
  * Create the Average Price vs. Neighborhood bar chart
+ *
+ * @param {String} context
+ * @param {Object} data
+ * @return {void}
  */
-function create_price_vs_neighborhood_chart(data) {
-    let context = $("#price_vs_neighborhood_chart");
-
+function create_price_vs_neighborhood_chart(context, data) {
     let options = {
         scales: {
             xAxes: [{

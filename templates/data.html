@@ -14,9 +14,9 @@
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
             Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.5)";
-            create_neighborhood_chart({{ neighborhood_metrics | tojson }});
-            create_listings_per_neighborhood_chart({{ listings_per_neighborhood | tojson }});
-            create_price_distribution_chart({{ price_distribution | tojson }});
+            create_neighborhood_chart("neighborhood_chart", {{ neighborhood_metrics | tojson }});
+            create_listings_per_neighborhood_chart("listings_per_neighborhood_chart", {{ listings_per_neighborhood | tojson }});
+            create_price_distribution_chart("price_distribution_chart", {{ price_distribution | tojson }});
         });
     </script>
 {% endblock %}
