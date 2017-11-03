@@ -17,6 +17,7 @@
             create_neighborhood_chart("neighborhood_chart", {{ neighborhood_metrics | tojson }});
             create_listings_per_neighborhood_chart("listings_per_neighborhood_chart", {{ listings_per_neighborhood | tojson }});
             create_price_distribution_chart("price_distribution_chart", {{ price_distribution | tojson }});
+            create_price_vs_neighborhood_chart("price_vs_neighborhood_chart", {{ price_per_neighborhood | tojson }});
         });
     </script>
 {% endblock %}
@@ -42,5 +43,6 @@
         <canvas id="neighborhood_chart" class="chart"></canvas>
         <canvas id="listings_per_neighborhood_chart" class="chart"></canvas>
         <canvas id="price_distribution_chart" class="chart"></canvas>
+        <canvas id="price_vs_neighborhood_chart" class="chart"></canvas>
     </div>
 {% endblock %}

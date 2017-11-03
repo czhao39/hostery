@@ -4,7 +4,7 @@
 
 
 /*
- * Create the neighborhood radar chart
+ * Create the Neighborhood Averages radar chart
  *
  * @param {String} context
  * @param {Object} data
@@ -38,7 +38,7 @@ function create_neighborhood_chart(context, data) {
 
 
 /*
- * Create the listings per neighborhood doughnut chart
+ * Create the Listings per Neighborhood doughnut chart
  *
  * @param {String} context
  * @param {Object} data
@@ -78,7 +78,7 @@ function create_price_distribution_chart(context, data) {
         },
         title: {
             display: true,
-            text: "Price Distribution",
+            text: "Neighborhood Price Distribution",
             fontSize: 28,
             fontStyle: "normal"
         },
@@ -126,7 +126,7 @@ function create_price_vs_neighborhood_chart(context, data) {
         },
         title: {
             display: true,
-            text: "Average Prices in Most Popular Neighborhoods",
+            text: "Average Nightly Prices",
             fontSize: 28,
             fontStyle: "normal"
         }
