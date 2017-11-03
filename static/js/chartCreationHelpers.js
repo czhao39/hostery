@@ -11,6 +11,8 @@
  * @return {void}
  */
 function create_neighborhood_chart(context, data) {
+    $context = $("#" + context);
+
     let options = {
         legend: {
             display: false
@@ -23,11 +25,14 @@ function create_neighborhood_chart(context, data) {
         },
     };
 
-    let chart = new Chart(context, {
+    let chart = new Chart($context, {
         type: "radar",
         data: data,
         options: options,
     });
+
+    $context.css("width", "");
+    $context.css("height", "");
 }
 
 
@@ -39,6 +44,8 @@ function create_neighborhood_chart(context, data) {
  * @return {void}
  */
 function create_listings_per_neighborhood_chart(context, data) {
+    $context = $("#" + context);
+
     let options = {
         legend: {
             display: false
@@ -50,6 +57,9 @@ function create_listings_per_neighborhood_chart(context, data) {
         data: data,
         options: options,
     });
+
+    $context.css("width", "");
+    $context.css("height", "");
 }
 
 /*
@@ -60,6 +70,8 @@ function create_listings_per_neighborhood_chart(context, data) {
  * @return {void}
  */
 function create_price_distribution_chart(context, data) {
+    $context = $("#" + context);
+
     let options = {
         legend: {
             display: false
@@ -77,6 +89,9 @@ function create_price_distribution_chart(context, data) {
         data: data,
         options: options,
     });
+
+    $context.css("width", "");
+    $context.css("height", "");
 }
 
 /*
@@ -87,6 +102,8 @@ function create_price_distribution_chart(context, data) {
  * @return {void}
  */
 function create_price_vs_neighborhood_chart(context, data) {
+    $context = $("#" + context);
+
     let options = {
         scales: {
             xAxes: [{
@@ -113,4 +130,7 @@ function create_price_vs_neighborhood_chart(context, data) {
         data: data,
         options: options,
     });
+
+    $context.css("width", "");
+    $context.css("height", "");
 }

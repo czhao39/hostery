@@ -4,6 +4,10 @@
     width: 100%;
 }
 
+.chart-wrapper {
+    margin-top: 2em;
+}
+
 .chart-wrapper > h5 {
     text-align: center;
 }

@@ -40,21 +40,23 @@
 
     <div class="card-panel z-depth-2">
         <h4>Hostery SmartCharts</h4>
-        <div class="chart-wrapper">
-            <h5>Neighborhood Averages</h5>
-            <canvas id="neighborhood_chart"></canvas>
-        </div>
-        <div class="chart-wrapper">
-            <h5>Number of Listings per Neighborhood</h5>
-            <canvas id="listings_per_neighborhood_chart"></canvas>
-        </div>
-        <div class="chart-wrapper">
-            <h5>Neighborhood Price Distribution</h5>
-            <canvas id="price_distribution_chart"></canvas>
-        </div>
-        <div class="chart-wrapper">
-            <h5>Average Nightly Prices per Neighborhood</h5>
-            <canvas id="price_vs_neighborhood_chart"></canvas>
+        <div class="row">
+            <div class="chart-wrapper col s12 m6">
+                <h5>Neighborhood Averages</h5>
+                <canvas id="neighborhood_chart"></canvas>
+            </div>
+            <div class="chart-wrapper col s12 m6">
+                <h5>Listings per Neighborhood</h5>
+                <canvas id="listings_per_neighborhood_chart"></canvas>
+            </div>
+            <div class="chart-wrapper col s12">
+                <h5>Neighborhood Price Distribution</h5>
+                <canvas id="price_distribution_chart"></canvas>
+            </div>
+            <div class="chart-wrapper col s12">
+                <h5>Average Nightly Prices per Neighborhood</h5>
+                <canvas id="price_vs_neighborhood_chart"></canvas>
+            </div>
         </div>
     </div>
 {% endblock %}
