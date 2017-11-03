@@ -21,12 +21,6 @@ function create_neighborhood_chart(context, data) {
                 stepSize: 1
             }
         },
-        title: {
-            display: true,
-            text: "Neighborhood Averages",
-            fontSize: 28,
-            fontStyle: "normal"
-        },
     };
 
     let chart = new Chart(context, {
@@ -49,12 +43,6 @@ function create_listings_per_neighborhood_chart(context, data) {
         legend: {
             display: false
         },
-        title: {
-            display: true,
-            text: "Number of Listings per Neighborhood",
-            fontSize: 28,
-            fontStyle: "normal"
-        },
     };
 
     let chart = new Chart(context, {
@@ -75,12 +63,6 @@ function create_price_distribution_chart(context, data) {
     let options = {
         legend: {
             display: false
-        },
-        title: {
-            display: true,
-            text: "Neighborhood Price Distribution",
-            fontSize: 28,
-            fontStyle: "normal"
         },
         scales: {
             xAxes: [{
@@ -124,12 +106,6 @@ function create_price_vs_neighborhood_chart(context, data) {
         legend: {
             display: false
         },
-        title: {
-            display: true,
-            text: "Average Nightly Prices",
-            fontSize: 28,
-            fontStyle: "normal"
-        }
     };
 
     let chart = new Chart(context, {
