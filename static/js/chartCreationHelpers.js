@@ -31,8 +31,7 @@ function create_neighborhood_chart(context, data) {
         options: options,
     });
 
-    $context.css("width", "");
-    $context.css("height", "");
+    chart.resize();
 }
 
 
@@ -58,8 +57,7 @@ function create_listings_per_neighborhood_chart(context, data) {
         options: options,
     });
 
-    $context.css("width", "");
-    $context.css("height", "");
+    chart.resize();
 }
 
 /*
@@ -90,8 +88,7 @@ function create_price_distribution_chart(context, data) {
         options: options,
     });
 
-    $context.css("width", "");
-    $context.css("height", "");
+    chart.resize();
 }
 
 /*
@@ -131,6 +128,5 @@ function create_price_vs_neighborhood_chart(context, data) {
         options: options,
     });
 
-    $context.css("width", "");
-    $context.css("height", "");
+    chart.resize();
 }

@@ -2,6 +2,7 @@
     text-align: center;
 }
 
-.chart-wrapper > canvas {
+.chart-wrapper > .chart-container {
+    position: relative;
     width: 100%;
 }
