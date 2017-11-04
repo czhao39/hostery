@@ -61,7 +61,10 @@ def data():
 @app.route("/analytics")
 def analytics():
     context = {
-        "price_vs_neighborhood_data": data_processing.get_price_vs_neighborhood_data(),
+        "listing_avgs": data_processing.get_listing_avgs_data(),
+        "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(),
+        "price_distribution": data_processing.get_price_distribution_data(),
+        "price_per_neighborhood": data_processing.get_price_vs_neighborhood_data(),
     }
     return render_template("analytics.html", **context)
 

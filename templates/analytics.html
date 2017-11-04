@@ -14,7 +14,10 @@
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
             Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.1)";
-            create_price_vs_neighborhood_chart("price_vs_neighborhood_chart", {{ price_vs_neighborhood_data | tojson }});
+            create_listing_avgs_chart("listing_avgs_chart", {{ listing_avgs | tojson }});
+            create_listings_per_neighborhood_chart("listings_per_neighborhood_chart", {{ listings_per_neighborhood | tojson }});
+            create_price_distribution_chart("price_distribution_chart", {{ price_distribution | tojson }});
+            create_price_vs_neighborhood_chart("price_vs_neighborhood_chart", {{ price_per_neighborhood | tojson }});
         });
     </script>
 {% endblock %}
@@ -23,11 +26,23 @@
 {% block content %}
     {{ super() }}
 
-    <h4>San Francisco Airbnb Analytics</h4>
+    <h4>Overall San Francisco Analytics</h4>
 
     <!-- Average Price vs. Neighborhood chart -->
-    <div class="section">
-        <div class="chart-wrapper">
+    <div class="row">
+        <div class="chart-wrapper col s12 m6">
+            <h5>Listing Averages</h5>
+            <div class="chart-container"><canvas id="listing_avgs_chart"></canvas></div>
+        </div>
+        <div class="chart-wrapper col s12 m6">
+            <h5>Listings per Neighborhood</h5>
+            <div class="chart-container"><canvas id="listings_per_neighborhood_chart"></canvas></div>
+        </div>
+        <div class="chart-wrapper col s12">
+            <h5>Listing Price Distribution</h5>
+            <div class="chart-container"><canvas id="price_distribution_chart"></canvas></div>
+        </div>
+        <div class="chart-wrapper col s12">
             <h5>Average Nightly Prices per Neighborhood</h5>
             <div class="chart-container"><canvas id="price_vs_neighborhood_chart"></canvas></div>
         </div>
