@@ -69,6 +69,28 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
     return price_estimate
 
 
+def get_most_popular_neighborhood(min_ratings=10):
+    """
+    Returns the neighborhood with the most positive average rating, with at least min_ratings ratings.
+    """
+
+    # A dictionary mapping each neighborhood to [num_listings, total_rating]
+    # Used for computing averages
+    neighborhood_data = {}
+    for listing in listings:
+        neighborhood = listing["host_neighbourhood"]
+        if not neighborhood or not listing["review_scores_rating"]:
+            continue
+        if neighborhood not in neighborhood_data:
+            neighborhood_data[neighborhood] = [1, float(listing["review_scores_rating"])]
+        else:
+            neighborhood_data[neighborhood][0] += 1
+            neighborhood_data[neighborhood][1] += float(listing["review_scores_rating"])
+
+    return max((n for n in neighborhood_data if neighborhood_data[n][0] >= min_ratings), key=lambda n: neighborhood_data[n][1] / neighborhood_data[n][0])
+
+
+
 def get_neighborhood_avg_price(neighborhood, min_listings=4):
     """
     Returns the average price in the given neighborhood.
