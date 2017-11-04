@@ -58,15 +58,15 @@ def data():
         return redirect("/")
 
 
-@app.route("/analytics")
-def analytics():
+@app.route("/overall")
+def overall():
     context = {
         "listing_avgs": data_processing.get_listing_avgs_data(),
         "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(),
         "price_distribution": data_processing.get_price_distribution_data(),
         "price_per_neighborhood": data_processing.get_price_vs_neighborhood_data(),
     }
-    return render_template("analytics.html", **context)
+    return render_template("overallAnalytics.html", **context)
 
 
 if __name__ == "__main__":
