@@ -1,6 +1,7 @@
 import csv
 
 import heapq
+from collections import defaultdict
 
 PRIMARY_COLOR = "rgba(33, 150, 243, 0.5)"
 ACCENT_COLOR = "rgba(41, 98, 255, 0.5)"
@@ -76,16 +77,13 @@ def get_most_popular_neighborhood(min_ratings=10):
 
     # A dictionary mapping each neighborhood to [num_listings, total_rating]
     # Used for computing averages
-    neighborhood_data = {}
+    neighborhood_data = defaultdict(lambda: [0, 0])
     for listing in listings:
         neighborhood = listing["host_neighbourhood"]
         if not neighborhood or not listing["review_scores_rating"]:
             continue
-        if neighborhood not in neighborhood_data:
-            neighborhood_data[neighborhood] = [1, float(listing["review_scores_rating"])]
-        else:
-            neighborhood_data[neighborhood][0] += 1
-            neighborhood_data[neighborhood][1] += float(listing["review_scores_rating"])
+        neighborhood_data[neighborhood][0] += 1
+        neighborhood_data[neighborhood][1] += float(listing["review_scores_rating"])
 
     return max((n for n in neighborhood_data if neighborhood_data[n][0] >= min_ratings), key=lambda n: neighborhood_data[n][1] / neighborhood_data[n][0])
 
@@ -160,7 +158,7 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10
 
     # A dictionary mapping each neighborhood to [num_listings, total_price]
     # Used for computing averages
-    neighborhood_data = {}
+    neighborhood_data = defaultdict(lambda: [0, 0])
     query_neighborhood_data = [0, 0]
     for listing in listings:
         neighborhood = listing["host_neighbourhood"]
@@ -170,11 +168,8 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10
             query_neighborhood_data[0] += 1
             query_neighborhood_data[1] += price_str_to_float(listing["price"])
         else:
-            if neighborhood not in neighborhood_data:
-                neighborhood_data[neighborhood] = [1, price_str_to_float(listing["price"])]
-            else:
-                neighborhood_data[neighborhood][0] += 1
-                neighborhood_data[neighborhood][1] += price_str_to_float(listing["price"])
+            neighborhood_data[neighborhood][0] += 1
+            neighborhood_data[neighborhood][1] += price_str_to_float(listing["price"])
 
     if query_neighborhood is None or query_neighborhood_data[0] == 0:
         popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
@@ -210,7 +205,7 @@ def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhood
         query_neighborhood = None
 
     # A dictionary mapping each neighborhood to the number of listings in that neighborhood
-    neighborhood_counts = {}
+    neighborhood_counts = defaultdict(lambda: 0)
     query_neighborhood_count = 0
     for listing in listings:
         neighborhood = listing["host_neighbourhood"]
@@ -218,8 +213,6 @@ def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhood
             continue
         if neighborhood == query_neighborhood:
             query_neighborhood_count += 1
-        elif neighborhood not in neighborhood_counts:
-            neighborhood_counts[neighborhood] = 1
         else:
             neighborhood_counts[neighborhood] += 1
 
@@ -256,15 +249,12 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
         query_neighborhood = None
 
     # A dictionary mapping interval start points to frequencies
-    distribution = {}
+    distribution = defaultdict(lambda: 0)
     for listing in listings:
         if query_neighborhood is not None and listing["host_neighbourhood"] != query_neighborhood:
             continue
         interval_start = int(price_str_to_float(listing["price"]) // interval_size * interval_size)
-        if interval_start not in distribution:
-            distribution[interval_start] = 1
-        else:
-            distribution[interval_start] += 1
+        distribution[interval_start] += 1
 
     sorted_intervals = sorted(distribution.keys())
     labels = [u"${}\u2013${}".format(interval_start, interval_start + interval_size - 1) for interval_start in
