@@ -26,10 +26,12 @@
 {% block content %}
     {{ super() }}
 
-    <h4>{{ formatted_address }}</h4>
-    <iframe class="map"
-            src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ gmaps_api_key }}"
-            allowfullscreen></iframe>
+    {% if formatted_address %}
+        <h4>{{ formatted_address }}</h4>
+        <iframe class="map"
+                src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ gmaps_api_key }}"
+                allowfullscreen></iframe>
+    {% endif %}
 
     <div class="card-panel z-depth-2">
         <h4>Hostery SmartMetrics for {{ formatted_neighborhood }}</h4>
