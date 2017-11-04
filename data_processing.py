@@ -94,7 +94,7 @@ def get_listing_avgs_data(query_neighborhood=None):
 
     METRICS = ["accommodates", "bathrooms", "bedrooms", "beds", "guests_included"]
 
-    labels = [metric.replace('_', ' ').capitalize() for metric in METRICS]
+    labels = [metric.replace('_', ' ').title() for metric in METRICS]
     data = []
     # A list where each item is a metric's [num_listings, total]
     # Used for computing averages
