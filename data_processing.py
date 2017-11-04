@@ -4,7 +4,7 @@ import heapq
 from collections import defaultdict
 
 PRIMARY_COLOR = "rgba(33, 150, 243, 0.5)"
-ACCENT_COLOR = "rgba(41, 98, 255, 0.5)"
+ACCENT_COLOR = "rgba(255, 109, 0, 0.5)"
 
 # Load listings into memory
 LISTINGS_PATH = "airbnb-sep-2017/listings.csv"

@@ -13,7 +13,7 @@
         $(document).ready(function () {
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
-            Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.1)";
+
             create_listing_avgs_chart("listing_avgs_chart", {{ listing_avgs | tojson }});
             create_listings_per_neighborhood_chart("listings_per_neighborhood_chart", {{ listings_per_neighborhood | tojson }});
             create_price_distribution_chart("price_distribution_chart", {{ price_distribution | tojson }});
