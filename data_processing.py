@@ -2,6 +2,9 @@ import csv
 
 import heapq
 
+PRIMARY_COLOR = "rgba(33, 150, 243, 0.5)"
+ACCENT_COLOR = "rgba(41, 98, 255, 0.5)"
+
 # Load listings into memory
 LISTINGS_PATH = "airbnb-sep-2017/listings.csv"
 with open(LISTINGS_PATH) as listings_csv:
@@ -119,8 +122,8 @@ def get_listing_avgs_data(query_neighborhood=None):
             "pointRadius": 5,
             "pointHoverRadius": 10,
             "pointHitRadius": 15,
-            "pointBackgroundColor": "rgba(41, 98, 255, 0.5)",
-            "backgroundColor": "rgba(33, 150, 243, 0.5)",
+            "pointBackgroundColor": ACCENT_COLOR,
+            "backgroundColor": PRIMARY_COLOR,
         }],
     }
 
@@ -153,14 +156,14 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10
 
     if query_neighborhood is None or query_neighborhood_data[0] == 0:
         popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
-        chart_color = "rgba(33, 150, 243, 0.5)"
+        chart_color = PRIMARY_COLOR
     else:
         popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_data, key=lambda n: neighborhood_data[n][0])
         popular_neighborhoods.append(query_neighborhood)
         neighborhood_data[query_neighborhood] = query_neighborhood_data
-        chart_color = ["rgba(33, 150, 243, 0.5)"] * (num_neighborhoods - 1)
+        chart_color = [PRIMARY_COLOR] * (num_neighborhoods - 1)
         # Have the query neighborhood be an accent color
-        chart_color.append("rgba(41, 98, 255, 0.5)")
+        chart_color.append(ACCENT_COLOR)
 
     labels = [neighborhood for neighborhood in popular_neighborhoods]
     data = [round_to(neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0], 2) for neighborhood in
@@ -200,14 +203,14 @@ def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhood
 
     if query_neighborhood is None or query_neighborhood_count == 0:
         popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_counts, key=neighborhood_counts.get)
-        chart_color = "rgba(33, 150, 243, 0.5)"
+        chart_color = PRIMARY_COLOR
     else:
         popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_counts, key=neighborhood_counts.get)
         popular_neighborhoods.append(query_neighborhood)
         neighborhood_counts[query_neighborhood] = query_neighborhood_count
-        chart_color = ["rgba(33, 150, 243, 0.5)"] * (num_neighborhoods - 1)
+        chart_color = [PRIMARY_COLOR] * (num_neighborhoods - 1)
         # Have the query neighborhood be an accent color
-        chart_color.append("rgba(41, 98, 255, 0.5)")
+        chart_color.append(ACCENT_COLOR)
 
     labels = [neighborhood for neighborhood in popular_neighborhoods]
     data = [neighborhood_counts[neighborhood] for neighborhood in popular_neighborhoods]
@@ -251,7 +254,7 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
         "datasets": [{
             "label": "Number of Listings",
             "data": data,
-            "backgroundColor": "rgba(33, 150, 243, 0.5)",
+            "backgroundColor": PRIMARY_COLOR,
         }],
     }
 
