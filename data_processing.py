@@ -84,10 +84,13 @@ def get_neighborhood_avg_price(neighborhood, min_listings=4):
     return total_price / num_listings
 
 
-def get_neighborhood_metrics(neighborhood):
+def get_listing_avgs_data(query_neighborhood=None):
     """
-    Returns the data object used by Chart.js to generate the Neighborhood Data radar chart for a given neighborhood.
+    Returns the data object used by Chart.js to generate the Listing Averages radar chart for a given neighborhood.
     """
+
+    if not query_neighborhood:
+        query_neighborhood = None
 
     METRICS = ["accommodates", "bathrooms", "bedrooms", "beds", "guests_included"]
 
@@ -97,7 +100,10 @@ def get_neighborhood_metrics(neighborhood):
     # Used for computing averages
     metric_data = [[0, 0] for _ in METRICS]
     for listing in listings:
-        if listing["host_neighbourhood"] != neighborhood:
+        neighborhood = listing["host_neighbourhood"]
+        if not neighborhood:
+            continue
+        if query_neighborhood is not None and neighborhood != query_neighborhood:
             continue
         for m in range(len(METRICS)):
             if len(listing[METRICS[m]]) == 0:

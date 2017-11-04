@@ -4,13 +4,13 @@
 
 
 /*
- * Create the Neighborhood Averages radar chart
+ * Create the Listing Averages radar chart
  *
  * @param {String} context
  * @param {Object} data
  * @return {void}
  */
-function create_neighborhood_chart(context, data) {
+function create_listing_avgs_chart(context, data) {
     $context = $("#" + context);
 
     let options = {

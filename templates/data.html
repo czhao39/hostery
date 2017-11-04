@@ -14,7 +14,7 @@
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
             Chart.defaults.global.defaultColor = "rgba(33, 150, 243, 0.5)";
-            create_neighborhood_chart("neighborhood_chart", {{ neighborhood_metrics | tojson }});
+            create_listing_avgs_chart("listing_avgs_chart", {{ listing_avgs | tojson }});
             create_listings_per_neighborhood_chart("listings_per_neighborhood_chart", {{ listings_per_neighborhood | tojson }});
             create_price_distribution_chart("price_distribution_chart", {{ price_distribution | tojson }});
             create_price_vs_neighborhood_chart("price_vs_neighborhood_chart", {{ price_per_neighborhood | tojson }});
@@ -42,8 +42,8 @@
         <h4>Hostery SmartCharts</h4>
         <div class="row">
             <div class="chart-wrapper col s12 m6">
-                <h5>Neighborhood Averages</h5>
-                <div class="chart-container"><canvas id="neighborhood_chart"></canvas></div>
+                <h5>Neighborhood Listing Averages</h5>
+                <div class="chart-container"><canvas id="listing_avgs_chart"></canvas></div>
             </div>
             <div class="chart-wrapper col s12 m6">
                 <h5>Listings per Neighborhood</h5>
