@@ -72,6 +72,11 @@ def overall():
     return render_template("overallAnalytics.html", **context)
 
 
+@app.route("/help")
+def help():
+    return render_template("help.html")
+
+
 if __name__ == "__main__":
     import sys
 

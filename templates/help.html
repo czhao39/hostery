@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+    {{ super() }}
+
+    <div class="section">
+        <h3>How to use Hostery SmartCharts</h3>
+        <p>
+            We do quite a bit of number crunching to generate Hostery SmartCharts, just for you! There are four types of Hostery SmartCharts, and we briefly describe each one below.
+        </p>
+    </div>
+    <div class="section">
+        <h5>Neighborhood Listing Averages</h5>
+        <p>
+            The Listing Averages chart shows the average number of hostee accomadations, bathrooms, bedrooms, beds, and guests included in each listing. This data is calculated for the neighborhood of your provided coordinates, so you can see how your potential listing will compare to other listings in the neighborhood. If you want to stay competitive, make sure your listing doesn't fall too far below average.
+        </p>
+    </div>
+    <div class="section">
+        <h5>Listings per Neighborhood</h5>
+        <p>
+            The Listings per Neighborhood chart shows how the number of listings in your neighborhood compares to the most popular neighborhoods. This gives you a sense of how much competition you will have and how difficult it will be to get a hostee.
+        </p>
+    </div>
+    <div class="section">
+        <h5>Neighborhood Listing Price Distribution</h5>
+        <p>
+            The Neighborhood Listing Price Distribution chart shows the distribution of nightly prices within your neighborhood. This will help you decide how to price your listing, whether your listing is relatively average, low-end, or high-end within your neighborhood.
+        </p>
+    </div>
+    <div class="section">
+        <h5>Average Nightly Prices per Neighborhood</h5>
+        <p>
+            The Average Nightly Prices per Neighborhood chart shows how the average nightly price in your neighborhood compares to the most popular neighborhoods. This is especially useful for hosts looking to invest in new properties. It may not make sense to list properties in neighborhoods where the average nightly price is very low.
+        </p>
+    </div>
+{% endblock %}
