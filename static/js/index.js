@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 
 function runAnimationSequence() {
-    $(".animation-group").velocity("transition.slideUpIn", {duration: 1000, stagger: 800})
+    $(".animation-group").velocity("transition.slideUpIn", {duration: 1200, stagger: 200})
 }
 
 function start_loader() {
