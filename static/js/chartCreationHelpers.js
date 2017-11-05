@@ -111,7 +111,7 @@ function create_price_vs_neighborhood_chart(context, data) {
             yAxes: [{
                 ticks: {
                     // Prepend a dollar sign in the ticks
-                    callback: function(value, index, values) {
+                    callback: function (value, index, values) {
                         return '$' + value;
                     }
                 }

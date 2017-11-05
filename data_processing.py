@@ -50,7 +50,7 @@ def get_weekly_avg_income(lat, lng, n=4):
 
 def get_max_bookings_price(lat, lng, dist_range=0.5):
     """
-    Given the latitude and longitude of a listingerty, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
+    Given the latitude and longitude of a listing, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
     """
 
     dist_range_sq = dist_range ** 2
@@ -86,14 +86,15 @@ def get_most_popular_neighborhood(min_ratings=10):
         neighborhood_data[neighborhood][0] += 1
         neighborhood_data[neighborhood][1] += float(rating)
 
-    neighborhood_avg_ratings = {n: neighborhood_data[n][1] / neighborhood_data[n][0] for n in neighborhood_data if neighborhood_data[n][0] >= min_ratings}
+    neighborhood_avg_ratings = {n: neighborhood_data[n][1] / neighborhood_data[n][0] for n in neighborhood_data if
+                                neighborhood_data[n][0] >= min_ratings}
 
     return max(neighborhood_avg_ratings, key=lambda n: neighborhood_avg_ratings[n])
 
 
 def get_best_neighborhood_investment():
     """
-    Returns the best neighborhood to invest in.
+    Returns the best neighborhood to invest in based on average nightly price and monthly number of ratings.
     """
 
     # A dictionary mapping each neighborhood to [num_listings, total_price]
@@ -109,7 +110,8 @@ def get_best_neighborhood_investment():
         neighborhood_avg_price_data[neighborhood][1] += price_str_to_float(listing["price"])
         neighborhood_total_reviews[neighborhood] += float(num_reviews)
 
-    neighborhood_avg_prices = {n: neighborhood_avg_price_data[n][1] / neighborhood_avg_price_data[n][0] for n in neighborhood_avg_price_data}
+    neighborhood_avg_prices = {n: neighborhood_avg_price_data[n][1] / neighborhood_avg_price_data[n][0] for n in
+                               neighborhood_avg_price_data}
     # Investment score is directly proportional to average price and total number of reviews per month
     investment_scores = {n: neighborhood_avg_prices[n] * neighborhood_total_reviews[n] for n in neighborhood_avg_prices}
 
@@ -136,7 +138,7 @@ def get_neighborhood_avg_price(neighborhood, min_listings=4):
 
 def get_listing_avgs_data(query_neighborhood=None):
     """
-    Returns the data object used by Chart.js to generate the Listing Averages radar chart for a given neighborhood.
+    Returns the data object used by Chart.js to generate the Listing Averages radar chart for a given neighborhood if specified, or all neighborhoods if unspecified.
     """
 
     if not query_neighborhood:
@@ -199,10 +201,12 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10
             neighborhood_data[neighborhood][1] += price_str_to_float(listing["price"])
 
     if query_neighborhood is None or query_neighborhood_data[0] == 0:
-        popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data, key=lambda n: neighborhood_data[n][0])
+        popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data,
+                                               key=lambda n: neighborhood_data[n][0])
         chart_color = PRIMARY_COLOR
     else:
-        popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_data, key=lambda n: neighborhood_data[n][0])
+        popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_data,
+                                               key=lambda n: neighborhood_data[n][0])
         popular_neighborhoods.append(query_neighborhood)
         neighborhood_data[query_neighborhood] = query_neighborhood_data
         chart_color = [PRIMARY_COLOR] * (num_neighborhoods - 1)
