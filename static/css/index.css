@@ -2,6 +2,10 @@
     margin-top: 20vh;
 }
 
+.animation-group {
+    display: none;
+}
+
 #welcome-text {
     margin-bottom: 2rem;
 }

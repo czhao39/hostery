@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="/css/index.css"/>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.ui.min.js" integrity="sha256-sy9XDO27Le9UKdsCaEwGdSqPWH2KCljZoREdFiuz14E=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 {% endblock %}
 
@@ -14,27 +15,36 @@
     {{ super() }}
 
     <div id="hero-wrapper">
-        <h3 id="welcome-text" class="center-align">Welcome to The Hostery.</h3>
+        <div class="animation-group">
+            <h3 id="welcome-text" class="center-align">Welcome to The Hostery.</h3>
+        </div>
 
-        <p class="center-align">
-            Enter the coordinates of your potential new Airbnb property, and let The Hostery do the rest.
-        </p>
+        <div class="animation-group">
+            <p class="center-align">
+                We provide Airbnb hosts with relevant information and insights on where and what kind of properties to list.
+            </p>
+        </div>
+        <div class="animation-group">
+            <p class="center-align">
+                Enter the coordinates of your potential Airbnb property, and let The Hostery do the rest.
+            </p>
 
-        <!-- Search form -->
-        <div class="row">
-            <form id="search-form" action="data" method="GET">
-                <div class="col s12 m10 offset-m1 l8 offset-l2">
-                    <div class="input-field col s6">
-                        <input name="latitude" id="search-latitude" type="text" class="validate" required>
-                        <label for="search-latitude">Latitude &deg;</label>
+            <!-- Search form -->
+            <div class="row">
+                <form id="search-form" action="data" method="GET">
+                    <div class="col s12 m10 offset-m1 l8 offset-l2">
+                        <div class="input-field col s6">
+                            <input name="latitude" id="search-latitude" type="text" class="validate" required>
+                            <label for="search-latitude">Latitude &deg;</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input name="longitude" id="search-longitude" type="text" class="validate" required>
+                            <label for="search-longitude">Longitude &deg;</label>
+                        </div>
+                        <input type="submit" class="hide">
                     </div>
-                    <div class="input-field col s6">
-                        <input name="longitude" id="search-longitude" type="text" class="validate" required>
-                        <label for="search-longitude">Longitude &deg;</label>
-                    </div>
-                    <input type="submit" class="hide">
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         <!-- Loading text and spinner -->
