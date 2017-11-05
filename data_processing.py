@@ -80,13 +80,40 @@ def get_most_popular_neighborhood(min_ratings=10):
     neighborhood_data = defaultdict(lambda: [0, 0])
     for listing in listings:
         neighborhood = listing["host_neighbourhood"]
-        if not neighborhood or not listing["review_scores_rating"]:
+        rating = listing["review_scores_rating"]
+        if not neighborhood or not rating:
             continue
         neighborhood_data[neighborhood][0] += 1
-        neighborhood_data[neighborhood][1] += float(listing["review_scores_rating"])
+        neighborhood_data[neighborhood][1] += float(rating)
 
-    return max((n for n in neighborhood_data if neighborhood_data[n][0] >= min_ratings), key=lambda n: neighborhood_data[n][1] / neighborhood_data[n][0])
+    neighborhood_avg_ratings = {n: neighborhood_data[n][1] / neighborhood_data[n][0] for n in neighborhood_data if neighborhood_data[n][0] >= min_ratings}
 
+    return max(neighborhood_avg_ratings, key=lambda n: neighborhood_avg_ratings[n])
+
+
+def get_best_neighborhood_investment():
+    """
+    Returns the best neighborhood to invest in.
+    """
+
+    # A dictionary mapping each neighborhood to [num_listings, total_price]
+    neighborhood_avg_price_data = defaultdict(lambda: [0, 0])
+    # A dictionary mapping each neighborhood to its total number of reviews per month
+    neighborhood_total_reviews = defaultdict(lambda: 0)
+    for listing in listings:
+        neighborhood = listing["host_neighbourhood"]
+        num_reviews = listing["reviews_per_month"]
+        if not neighborhood or not num_reviews:
+            continue
+        neighborhood_avg_price_data[neighborhood][0] += 1
+        neighborhood_avg_price_data[neighborhood][1] += price_str_to_float(listing["price"])
+        neighborhood_total_reviews[neighborhood] += float(num_reviews)
+
+    neighborhood_avg_prices = {n: neighborhood_avg_price_data[n][1] / neighborhood_avg_price_data[n][0] for n in neighborhood_avg_price_data}
+    # Investment score is directly proportional to average price and total number of reviews per month
+    investment_scores = {n: neighborhood_avg_prices[n] * neighborhood_total_reviews[n] for n in neighborhood_avg_prices}
+
+    return max(investment_scores, key=lambda n: investment_scores[n])
 
 
 def get_neighborhood_avg_price(neighborhood, min_listings=4):

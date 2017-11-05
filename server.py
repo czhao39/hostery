@@ -63,6 +63,7 @@ def data():
 def overall():
     context = {
         "most_popular_neighborhood_formatted": data_processing.get_most_popular_neighborhood().replace('_', ' ').title(),
+        "best_investment_formatted": data_processing.get_best_neighborhood_investment().replace('_', ' ').title(),
         "listing_avgs": data_processing.get_listing_avgs_data(),
         "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(),
         "price_distribution": data_processing.get_price_distribution_data(),
