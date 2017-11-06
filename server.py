@@ -21,22 +21,37 @@ def format_money(m):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", gmaps_api_key=secret.GMAPS_API_KEY)
 
 
 @app.route("/data")
 def data():
     try:
-        lat = float(request.args.get("latitude"))
-        lng = float(request.args.get("longitude"))
-        r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params={
-            "latlng": "{},{}".format(lat, lng),
-            "key": secret.GMAPS_API_KEY,
-        }).json()
-        if r["results"]:
-            place = r["results"][0]
+        if "address" in request.args:
+            # Handle an address search
+            address = request.args.get("address")
+            r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params={
+                "address": address,
+                "key": secret.GMAPS_API_KEY,
+            }).json()
+            if r["results"]:
+                place = r["results"][0]
+                lat = place["geometry"]["location"]["lat"]
+                lng = place["geometry"]["location"]["lng"]
+            else:
+                place = {"formatted_address": None, "place_id": None}
         else:
-            place = {"formatted_address": None, "place_id": None}
+            # Handle a coordinate search
+            lat = float(request.args.get("latitude"))
+            lng = float(request.args.get("longitude"))
+            r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params={
+                "latlng": "{},{}".format(lat, lng),
+                "key": secret.GMAPS_API_KEY,
+            }).json()
+            if r["results"]:
+                place = r["results"][0]
+            else:
+                place = {"formatted_address": None, "place_id": None}
 
         closest_listing = data_processing.get_closest_listing(lat, lng)
         neighborhood = closest_listing["host_neighbourhood"]

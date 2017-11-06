@@ -8,6 +8,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.ui.min.js"
             integrity="sha256-sy9XDO27Le9UKdsCaEwGdSqPWH2KCljZoREdFiuz14E=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_api_key }}&libraries=places"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 {% endblock %}
 
@@ -31,19 +32,34 @@
                 Enter the coordinates of your potential Airbnb property, and let The Hostery do the rest.
             </p>
 
-            <!-- Search form -->
+            <!-- Coordinates search form -->
             <div class="row">
                 <form id="search-form" action="data" method="GET">
                     <div class="col s12 m10 offset-m1 l8 offset-l2">
                         <div class="input-field col s6">
-                            <input name="latitude" id="search-latitude" type="text" class="validate" required>
+                            <input name="latitude" id="search-latitude" type="text" class="validate">
                             <label for="search-latitude">Latitude &deg;</label>
                         </div>
                         <div class="input-field col s6">
-                            <input name="longitude" id="search-longitude" type="text" class="validate" required>
+                            <input name="longitude" id="search-longitude" type="text" class="validate">
                             <label for="search-longitude">Longitude &deg;</label>
                         </div>
                         <input type="submit" class="hide">
+                    </div>
+                </form>
+            </div>
+
+            <p class="center-align">
+                Or enter an address.
+            </p>
+
+            <!-- Address search form -->
+            <div class="row">
+                <form id="address-search-form" action="data" method="GET">
+                    <div class="col s12 m10 offset-m1 l8 offset-l2">
+                        <div class="input-field">
+                            <input name="address" id="search-address" type="text" class="validate">
+                        </div>
                     </div>
                 </form>
             </div>
