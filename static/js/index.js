@@ -1,8 +1,8 @@
-$(document).ready(function () {
+$(document).ready(function() {
     runAnimationSequence();
     initializeAddressSearch();
 
-    $("#search-form, #address-search-form").submit(function (event) {
+    $("#search-form, #address-search-form").submit(function(event) {
         start_loader();
     });
 });

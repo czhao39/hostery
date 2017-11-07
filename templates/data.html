@@ -18,8 +18,11 @@
             create_listings_per_neighborhood_chart("listings_per_neighborhood_chart", {{ listings_per_neighborhood | tojson }});
             create_price_distribution_chart("price_distribution_chart", {{ price_distribution | tojson }});
             create_price_vs_neighborhood_chart("price_vs_neighborhood_chart", {{ price_per_neighborhood | tojson }});
+
+            initialize_scrollfire();
         });
     </script>
+    <script type="text/javascript" src="/js/animateCharts.js"></script>
 {% endblock %}
 
 
