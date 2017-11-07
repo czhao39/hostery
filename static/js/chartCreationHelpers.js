@@ -3,18 +3,8 @@
  */
 
 
-// The Chart objects.
-var listing_avgs_chart;
-var listings_per_neighborhood_chart;
-var price_distribution_chart;
-var price_vs_neigborhood_chart;
-
-
-// The selectors of the Chart canvases.
-var listing_avgs_chart_selector;
-var listings_per_neighborhood_chart_selector;
-var price_distribution_chart_selector;
-var price_vs_neigborhood_chart_selector;
+// Maps chart canvas selectors to Chart.js objects and datasets
+var all_chart_info = new Map();
 
 
 /*
@@ -23,12 +13,13 @@ var price_vs_neigborhood_chart_selector;
  * @return {void}
  */
 function initialize_scrollfire() {
-    let options = [
-        { selector: listing_avgs_chart_selector, offset: 50, callback: function() { listing_avgs_chart.render() } },
-        { selector: listings_per_neighborhood_chart_selector, offset: 50, callback: function() { listings_per_neighborhood_chart.render() } },
-        { selector: price_distribution_chart_selector, offset: 50, callback: function() { price_distribution_chart.render() } },
-        { selector: price_vs_neigborhood_chart_selector, offset: 50, callback: function() { price_vs_neigborhood_chart.render() } },
-    ];
+    let options = [];
+    all_chart_info.forEach(function(val, key) {
+        options.push({ selector: key, offset: 100, callback: function() {
+            val.get("chart").data = val.get("data");
+            val.get("chart").update();
+        } });
+    });
 
     Materialize.scrollFire(options);
 }
@@ -42,8 +33,9 @@ function initialize_scrollfire() {
  * @return {void}
  */
 function create_listing_avgs_chart(context, data) {
-    listing_avgs_chart_selector = "#" + context;
-    $context = $(listing_avgs_chart_selector);
+    let selector = "#" + context;
+    all_chart_info.set(selector, new Map());
+    all_chart_info.get(selector).set("data", data);
 
     let options = {
         legend: {
@@ -57,14 +49,13 @@ function create_listing_avgs_chart(context, data) {
         },
     };
 
-    listing_avgs_chart = new Chart($context, {
+    let chart = new Chart(context, {
         type: "radar",
-        data: data,
         options: options,
     });
+    chart.resize();
 
-    listing_avgs_chart.resize();
-    listing_avgs_chart.stop();
+    all_chart_info.get(selector).set("chart", chart);
 }
 
 
@@ -76,8 +67,9 @@ function create_listing_avgs_chart(context, data) {
  * @return {void}
  */
 function create_listings_per_neighborhood_chart(context, data) {
-    listings_per_neighborhood_chart_selector = "#" + context;
-    $context = $(listings_per_neighborhood_chart_selector);
+    let selector = "#" + context;
+    all_chart_info.set(selector, new Map());
+    all_chart_info.get(selector).set("data", data);
 
     let options = {
         legend: {
@@ -85,14 +77,13 @@ function create_listings_per_neighborhood_chart(context, data) {
         },
     };
 
-    listings_per_neighborhood_chart = new Chart(context, {
+    let chart = new Chart(context, {
         type: "doughnut",
-        data: data,
         options: options,
     });
+    chart.resize();
 
-    listings_per_neighborhood_chart.resize();
-    listings_per_neighborhood_chart.stop();
+    all_chart_info.get(selector).set("chart", chart);
 }
 
 /*
@@ -103,8 +94,9 @@ function create_listings_per_neighborhood_chart(context, data) {
  * @return {void}
  */
 function create_price_distribution_chart(context, data) {
-    price_distribution_chart_selector = "#" + context;
-    $context = $(price_distribution_chart_selector);
+    let selector = "#" + context;
+    all_chart_info.set(selector, new Map());
+    all_chart_info.get(selector).set("data", data);
 
     let options = {
         legend: {
@@ -118,14 +110,13 @@ function create_price_distribution_chart(context, data) {
         },
     };
 
-    price_distribution_chart = new Chart(context, {
+    let chart = new Chart(context, {
         type: "bar",
-        data: data,
         options: options,
     });
+    chart.resize();
 
-    price_distribution_chart.resize();
-    price_distribution_chart.stop();
+    all_chart_info.get(selector).set("chart", chart);
 }
 
 /*
@@ -136,8 +127,9 @@ function create_price_distribution_chart(context, data) {
  * @return {void}
  */
 function create_price_vs_neighborhood_chart(context, data) {
-    price_vs_neigborhood_chart_selector = "#" + context;
-    $context = $(price_vs_neigborhood_chart_selector);
+    let selector = "#" + context;
+    all_chart_info.set(selector, new Map());
+    all_chart_info.get(selector).set("data", data);
 
     let options = {
         scales: {
@@ -160,12 +152,11 @@ function create_price_vs_neighborhood_chart(context, data) {
         },
     };
 
-    price_vs_neigborhood_chart = new Chart(context, {
+    let chart = new Chart(context, {
         type: "bar",
-        data: data,
         options: options,
     });
+    chart.resize();
 
-    price_vs_neigborhood_chart.resize();
-    price_vs_neigborhood_chart.stop();
+    all_chart_info.get(selector).set("chart", chart);
 }
