@@ -53,7 +53,6 @@ function create_listing_avgs_chart(context, data) {
         type: "radar",
         options: options,
     });
-    chart.resize();
 
     all_chart_info.get(selector).set("chart", chart);
 }
@@ -81,7 +80,6 @@ function create_listings_per_neighborhood_chart(context, data) {
         type: "doughnut",
         options: options,
     });
-    chart.resize();
 
     all_chart_info.get(selector).set("chart", chart);
 }
@@ -114,7 +112,6 @@ function create_price_distribution_chart(context, data) {
         type: "bar",
         options: options,
     });
-    chart.resize();
 
     all_chart_info.get(selector).set("chart", chart);
 }
@@ -156,7 +153,6 @@ function create_price_vs_neighborhood_chart(context, data) {
         type: "bar",
         options: options,
     });
-    chart.resize();
 
     all_chart_info.get(selector).set("chart", chart);
 }
