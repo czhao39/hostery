@@ -35,7 +35,7 @@ def get_closest_listing(lat, lng):
 
 def get_weekly_avg_income(lat, lng, n=4):
     """
-    Given the latitude and longitude of a new listing, estimates the average weekly income per hostee by averaging the prices of the n closest listings.
+    Given the latitude (lat) and longitude (lng) of a new listing, estimates the average weekly income per hostee by averaging the prices of the n closest listings.
     """
 
     listings_by_dist = []
@@ -50,7 +50,7 @@ def get_weekly_avg_income(lat, lng, n=4):
 
 def get_max_bookings_price(lat, lng, dist_range=0.5):
     """
-    Given the latitude and longitude of a listing, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
+    Given the latitude (lat) and longitude (lng) of a listing, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
     """
 
     dist_range_sq = dist_range ** 2
@@ -70,7 +70,7 @@ def get_max_bookings_price(lat, lng, dist_range=0.5):
     return price_estimate
 
 
-def get_most_popular_neighborhood(min_ratings=10):
+def get_most_popular_neighborhood(min_ratings=20):
     """
     Returns the neighborhood with the most positive average rating, with at least min_ratings ratings.
     """
@@ -112,7 +112,7 @@ def get_best_neighborhood_investment():
 
     neighborhood_avg_prices = {n: neighborhood_avg_price_data[n][1] / neighborhood_avg_price_data[n][0] for n in
                                neighborhood_avg_price_data}
-    # Investment score is directly proportional to average price and total number of reviews per month
+    # Investment score is proportional to average price and total number of reviews per month
     investment_scores = {n: neighborhood_avg_prices[n] * neighborhood_total_reviews[n] for n in neighborhood_avg_prices}
 
     return max(investment_scores, key=lambda n: investment_scores[n])
@@ -120,7 +120,7 @@ def get_best_neighborhood_investment():
 
 def get_neighborhood_avg_price(neighborhood, min_listings=4):
     """
-    Returns the average price in the given neighborhood.
+    Returns the average price in neighborhood. If the number of listings in neighborhood is less than min_listings, returns None.
     """
 
     num_listings = 0
@@ -138,7 +138,7 @@ def get_neighborhood_avg_price(neighborhood, min_listings=4):
 
 def get_listing_avgs_data(query_neighborhood=None):
     """
-    Returns the data object used by Chart.js to generate the Listing Averages radar chart for a given neighborhood if specified, or all neighborhoods if unspecified.
+    Returns the data object used by Chart.js to generate the Listing Averages radar chart for query_neighborhood if specified, or all neighborhoods if unspecified.
     """
 
     if not query_neighborhood:
@@ -179,7 +179,7 @@ def get_listing_avgs_data(query_neighborhood=None):
 
 def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10):
     """
-    Returns the data object used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the most popular neighborhoods, as well as the given neighborhood.
+    Returns the data object used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods, including query_neighborhood if specified.
     """
 
     if not query_neighborhood:
@@ -229,7 +229,7 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10
 
 def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
     """
-    Returns the data object used by Chart.js to generate a Number of Listings per Neighborhood doughnut chart for the most popular neighborhoods, as well as the given neighborhood.
+    Returns the data object used by Chart.js to generate a Number of Listings per Neighborhood doughnut chart for the num_neighborhoods most popular neighborhoods, including the query_neighborhood if specified.
     """
 
     if not query_neighborhood:
@@ -273,7 +273,7 @@ def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhood
 
 def get_price_distribution_data(query_neighborhood=None, interval_size=50):
     """
-    Returns the data object used by Chart.js to generate a price distribution histogram for the given query_neighborhood if specified, or all neighborhoods if unspecified.
+    Returns the data object used by Chart.js to generate a price distribution histogram for query_neighborhood if specified, or all neighborhoods if unspecified.
     """
 
     if not query_neighborhood:

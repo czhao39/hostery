@@ -3,7 +3,7 @@
  */
 
 
-// Maps chart canvas selectors to Chart.js objects and datasets
+// Maps chart canvas selectors to Chart.js objects and data
 var all_chart_info = new Map();
 
 
@@ -28,8 +28,8 @@ function initialize_scrollfire() {
 /*
  * Create the Listing Averages radar chart
  *
- * @param {String} context
- * @param {Object} data
+ * @param {String} context The chart context
+ * @param {Object} data The chart's data
  * @return {void}
  */
 function create_listing_avgs_chart(context, data) {
@@ -61,8 +61,8 @@ function create_listing_avgs_chart(context, data) {
 /*
  * Create the Listings per Neighborhood doughnut chart
  *
- * @param {String} context
- * @param {Object} data
+ * @param {String} context The chart context
+ * @param {Object} data The chart's data
  * @return {void}
  */
 function create_listings_per_neighborhood_chart(context, data) {
@@ -87,8 +87,8 @@ function create_listings_per_neighborhood_chart(context, data) {
 /*
  * Create the Price Distribution histogram
  *
- * @param {String} context
- * @param {Object} data
+ * @param {String} context The chart context
+ * @param {Object} data The chart's data
  * @return {void}
  */
 function create_price_distribution_chart(context, data) {
@@ -119,8 +119,8 @@ function create_price_distribution_chart(context, data) {
 /*
  * Create the Average Price vs. Neighborhood bar chart
  *
- * @param {String} context
- * @param {Object} data
+ * @param {String} context The chart context
+ * @param {Object} data The chart's data
  * @return {void}
  */
 function create_price_vs_neighborhood_chart(context, data) {
