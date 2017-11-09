@@ -1,3 +1,9 @@
+body {
+    /* Background pattern from subtlepatterns.com */
+    background-image: url("/seigaiha.png");
+    background-attachment: fixed;
+}
+
 nav, .navbar-fixed, .nav-wrapper i {
     height: 56px !important;
     line-height: 56px !important;
