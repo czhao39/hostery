@@ -26,6 +26,20 @@ function initialize_scrollfire() {
 
 
 /*
+ * Truncate s to max_length, appending ellipsis if truncated.
+ *
+ * @param {String} s
+ * @return {String}
+ */
+function truncate_str(s, max_len = 15) {
+    if (s.length > max_len) {
+        return s.substring(0, max_len - 3) + "\u2026";
+    }
+    return s;
+}
+
+
+/*
  * Create the Listing Averages radar chart
  *
  * @param {String} context The chart context
@@ -97,6 +111,11 @@ function create_price_distribution_chart(context, data) {
     all_chart_info.get(selector).set("data", data);
 
     let options = {
+        layout: {
+            padding: {
+                bottom: 15
+            }
+        },
         legend: {
             display: false
         },
@@ -129,16 +148,24 @@ function create_price_vs_neighborhood_chart(context, data) {
     all_chart_info.get(selector).set("data", data);
 
     let options = {
+        layout: {
+            padding: {
+                bottom: 10
+            }
+        },
         scales: {
             xAxes: [{
                 ticks: {
-                    autoSkip: false
+                    autoSkip: false,
+                    callback: function(value) {
+                        return truncate_str(value);
+                    }
                 }
             }],
             yAxes: [{
                 ticks: {
                     // Prepend a dollar sign in the ticks
-                    callback: function (value, index, values) {
+                    callback: function(value) {
                         return '$' + value;
                     }
                 }

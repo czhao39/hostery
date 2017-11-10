@@ -177,7 +177,7 @@ def get_listing_avgs_data(query_neighborhood=None):
     }
 
 
-def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=10):
+def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
     """
     Returns the data object used by Chart.js to generate an Average Price vs. Neighborhood bar chart for the num_neighborhoods most popular neighborhoods, including query_neighborhood if specified.
     """
@@ -288,7 +288,7 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
         distribution[interval_start] += 1
 
     sorted_intervals = sorted(distribution.keys())
-    labels = [u"${}\u2013${}".format(interval_start, interval_start + interval_size - 1) for interval_start in
+    labels = ["${}\u2013${}".format(interval_start, interval_start + interval_size - 1) for interval_start in
               sorted_intervals]
     data = [distribution[interval_start] for interval_start in sorted_intervals]
 
