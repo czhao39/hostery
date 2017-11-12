@@ -2,6 +2,14 @@ import csv
 
 import heapq
 from collections import defaultdict
+import numpy as np
+
+
+# Set this to False in production!!
+DEV = False
+if DEV:
+    import matplotlib.pyplot as plt
+
 
 PRIMARY_COLOR = "rgba(33, 150, 243, 0.5)"
 ACCENT_COLOR = "rgba(255, 109, 0, 0.5)"
@@ -51,26 +59,41 @@ def get_weekly_avg_income(lat, lng, n=5):
     return sum(listing[1] * listing[2] for listing in n_closest) / n * 7
 
 
-def get_max_bookings_price(lat, lng, dist_range=0.5):
+def get_optimal_price(lat, lng, n=30):
     """
-    Given the latitude (lat) and longitude (lng) of a listing, estimates the nightly price that will maximize bookings by determining the lowest price within a distance of dist_range degrees.
+    Given the latitude (lat) and longitude (lng) of a listing, estimates the nightly price that will maximize profits by using data from the n closest listings.
     """
 
-    dist_range_sq = dist_range ** 2
-    price_estimate = 1 << 32
+    listings_by_dist = []
     for listing in listings:
-        price = price_str_to_float(listing["price"])
-        if not price or price >= price_estimate:
-            continue
         dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
-        if dist_sq <= dist_range_sq:
-            price_estimate = price
+        price = price_str_to_float(listing["price"])
+        availability = float(listing["availability_30"])
+        # The estimated probability of the listing being booked on any given night, assuming that the actual availability will be approximately half of the availability over the next 30 days
+        booking_ratio = (30 - availability / 2) / 30
+        listings_by_dist.append((dist_sq, price, booking_ratio))
+    n_closest = heapq.nsmallest(n, listings_by_dist)
 
-    # If no listings within dist_range away, return the price of the closest listing
-    if price_estimate == 1 << 32:
-        return get_weekly_avg_income(lat, lng, 1) / 7
+    # Fit a quadratic to the income vs. price data, and determine the optimal price by finding the max of this curve
+    prices = np.array([listing[1] for listing in n_closest])
+    incomes = np.array([listing[1] * listing[2] for listing in n_closest])
+    curve_coeffs = np.polyfit(prices, incomes, deg=2)
 
-    return price_estimate
+    if DEV:
+        print("a = {}".format(curve_coeffs[0]))
+        # Plot the income vs. price graph and approximation
+        p = np.poly1d(curve_coeffs)
+        xp = np.linspace(0, 1200, 100)
+        plt.plot(prices, incomes, '.', xp, p(xp), '-')
+        plt.ylim(0, 1000)
+        plt.show()
+
+    if curve_coeffs[0] > 0:
+        # The income vs. price curve curves upwards, so there's no max! Just return the price of the listing associated with the highest income.
+        return prices[max(range(n), key=lambda i: incomes[i])]
+
+    # Vertex of the parabola is at x = -b / 2a
+    return -curve_coeffs[1] / (2 * curve_coeffs[0])
 
 
 def get_most_popular_neighborhood(min_ratings=20):

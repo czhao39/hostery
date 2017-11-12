@@ -62,7 +62,7 @@ def data():
             "place_id": place["place_id"],
             "formatted_neighborhood": neighborhood.replace('_', ' ').title(),
             "weekly_avg_income": data_processing.get_weekly_avg_income(lat, lng),
-            "max_bookings_price": data_processing.get_max_bookings_price(lat, lng),
+            "optimal_price": data_processing.get_optimal_price(lat, lng),
             "neighborhood_avg_price": data_processing.get_neighborhood_avg_price(neighborhood),
             "listing_avgs": data_processing.get_listing_avgs_data(neighborhood),
             "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(neighborhood),
