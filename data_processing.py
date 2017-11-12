@@ -33,19 +33,22 @@ def get_closest_listing(lat, lng):
                key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
 
 
-def get_weekly_avg_income(lat, lng, n=4):
+def get_weekly_avg_income(lat, lng, n=5):
     """
-    Given the latitude (lat) and longitude (lng) of a new listing, estimates the average weekly income per hostee by averaging the prices of the n closest listings.
+    Given the latitude (lat) and longitude (lng) of a new listing, estimates the average weekly income per hostee by using data from the n closest listings.
     """
 
     listings_by_dist = []
     for listing in listings:
         dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
         price = price_str_to_float(listing["price"])
-        listings_by_dist.append((dist_sq, price))
+        availability = float(listing["availability_30"])
+        # The estimated probability of the listing being booked on any given night, assuming that the actual availability will be approximately half of the availability over the next 30 days
+        booking_ratio = (30 - availability / 2) / 30
+        listings_by_dist.append((dist_sq, price, booking_ratio))
     n_closest = heapq.nsmallest(n, listings_by_dist)
 
-    return sum(listing[1] for listing in n_closest) / n * 7
+    return sum(listing[1] * listing[2] for listing in n_closest) / n * 7
 
 
 def get_max_bookings_price(lat, lng, dist_range=0.5):
