@@ -15,10 +15,12 @@ var all_chart_info = new Map();
 function initialize_scrollfire() {
     let options = [];
     all_chart_info.forEach(function(val, key) {
-        options.push({ selector: key, offset: 10, callback: function() {
-            val.get("chart").data = val.get("data");
-            val.get("chart").update();
-        } });
+        options.push({
+            selector: key, offset: 10, callback: function() {
+                val.get("chart").data = val.get("data");
+                val.get("chart").update();
+            }
+        });
     });
 
     Materialize.scrollFire(options);

@@ -1,15 +1,14 @@
 import csv
+import math
 
 import heapq
-from collections import defaultdict
 import numpy as np
-
+from collections import defaultdict
 
 # Set this to False in production!!
 DEV = False
 if DEV:
     import matplotlib.pyplot as plt
-
 
 PRIMARY_COLOR = "rgba(33, 150, 243, 0.3)"
 PRIMARY_BORDER_COLOR = "rgba(33, 150, 243, 0.8)"
@@ -22,8 +21,12 @@ with open(LISTINGS_PATH) as listings_csv:
     listings = [listing for listing in csv.DictReader(listings_csv)]
 
 
-def get_dist_squared(lat1, lng1, lat2, lng2):
-    return (lat1 - lat2) ** 2 + (lng1 - lng2) ** 2
+def get_dist(lat1, lng1, lat2, lng2):
+    """
+    Computes great-circle distance using Haversine formula.
+    """
+    return 2 * 6371 * math.asin(math.sqrt(
+        math.sin((lat2 - lat1) / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin((lng2 - lng1) / 2) ** 2))
 
 
 def price_str_to_float(price_str):
@@ -40,7 +43,7 @@ def get_closest_listing(lat, lng):
     """
 
     return min((listing for listing in listings if listing["host_neighbourhood"]),
-               key=lambda l: get_dist_squared(lat, lng, float(l["latitude"]), float(l["longitude"])))
+               key=lambda l: get_dist(lat, lng, float(l["latitude"]), float(l["longitude"])))
 
 
 def get_weekly_avg_income(lat, lng, n=5):
@@ -50,12 +53,12 @@ def get_weekly_avg_income(lat, lng, n=5):
 
     listings_by_dist = []
     for listing in listings:
-        dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
+        dist = get_dist(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
         price = price_str_to_float(listing["price"])
         availability = float(listing["availability_30"])
         # The estimated probability of the listing being booked on any given night, assuming that the actual availability will be approximately half of the availability over the next 30 days
         booking_ratio = (30 - availability / 2) / 30
-        listings_by_dist.append((dist_sq, price, booking_ratio))
+        listings_by_dist.append((dist, price, booking_ratio))
     n_closest = heapq.nsmallest(n, listings_by_dist)
 
     return sum(listing[1] * listing[2] for listing in n_closest) / n * 7
@@ -68,12 +71,12 @@ def get_optimal_price(lat, lng, n=30):
 
     listings_by_dist = []
     for listing in listings:
-        dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
+        dist = get_dist(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
         price = price_str_to_float(listing["price"])
         availability = float(listing["availability_30"])
         # The estimated probability of the listing being booked on any given night, assuming that the actual availability will be approximately half of the availability over the next 30 days
         booking_ratio = (30 - availability / 2) / 30
-        listings_by_dist.append((dist_sq, price, booking_ratio))
+        listings_by_dist.append((dist, price, booking_ratio))
     n_closest = heapq.nsmallest(n, listings_by_dist)
 
     # Fit a quadratic to the income vs. price data, and determine the optimal price by finding the max of this curve
@@ -351,14 +354,15 @@ def get_nearby_listings(lat, lng, n=6):
         # Skip listing if no thumbnail
         if not thumbnail_url.startswith("http"):
             continue
-        dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
+        dist = get_dist(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
         price = price_str_to_float(listing["price"])
         url = listing["listing_url"]
         summary = listing["summary"]
-        listings_by_dist.append((dist_sq, price, thumbnail_url, url, summary))
+        listings_by_dist.append((dist, price, thumbnail_url, url, summary))
     n_closest = heapq.nsmallest(n, listings_by_dist)
 
-    return [{"price": listing[1], "thumbnail_url": listing[2], "url": listing[3], "summary": listing[4]} for listing in n_closest]
+    return [{"price": listing[1], "thumbnail_url": listing[2], "url": listing[3], "summary": listing[4]} for listing in
+            n_closest]
 
 
 # For testing purposes.

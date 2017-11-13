@@ -10,7 +10,7 @@
             integrity="sha256-c0m8xzX5oOBawsnLVpHnU2ieISOvxi584aNElFl2W6M=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/chartCreationHelpers.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             Chart.defaults.global.defaultFontFamily = "'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
             Chart.defaults.global.defaultFontColor = "black";
 
@@ -79,14 +79,16 @@
         <div class="grey-text">Compare your property to nearby listings.</div>
         <ul class="collection">
             {% for listing in nearby_listings %}
-            <li class="listing-item collection-item">
-                <div class="row">
-                    <div class="listing-thumbnail col s12 m3"><img src="{{ listing.thumbnail_url }}"/></div>
-                    <div class="listing-summary col s12 m6 l7">{{ listing.summary }}</div>
-                    <div class="listing-price col s3 m2 l1">{{ listing.price | format_money }}</div>
-                    <div class="listing-link col s3 m1"><a href="{{ listing.url }}" target="_blank" rel="noopener noreferrer"><i class="material-icons">open_in_new</i></a></div>
-                </div>
-            </li>
+                <li class="listing-item collection-item">
+                    <div class="row">
+                        <div class="listing-thumbnail col s12 m3"><img src="{{ listing.thumbnail_url }}"/></div>
+                        <div class="listing-summary col s12 m6 l7">{{ listing.summary }}</div>
+                        <div class="listing-price col s3 m2 l1">{{ listing.price | format_money }}</div>
+                        <div class="listing-link col s3 m1"><a href="{{ listing.url }}" target="_blank"
+                                                               rel="noopener noreferrer"><i class="material-icons">open_in_new</i></a>
+                        </div>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     </div>
