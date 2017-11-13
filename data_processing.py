@@ -11,8 +11,10 @@ if DEV:
     import matplotlib.pyplot as plt
 
 
-PRIMARY_COLOR = "rgba(33, 150, 243, 0.5)"
-ACCENT_COLOR = "rgba(255, 109, 0, 0.5)"
+PRIMARY_COLOR = "rgba(33, 150, 243, 0.3)"
+PRIMARY_BORDER_COLOR = "rgba(33, 150, 243, 0.8)"
+ACCENT_COLOR = "rgba(255, 109, 0, 0.3)"
+ACCENT_BORDER_COLOR = "rgba(255, 109, 0, 0.8)"
 
 # Load listings into memory
 LISTINGS_PATH = "airbnb-sep-2017/listings.csv"
@@ -197,8 +199,55 @@ def get_listing_avgs_data(query_neighborhood=None):
             "pointRadius": 5,
             "pointHoverRadius": 10,
             "pointHitRadius": 15,
-            "pointBackgroundColor": ACCENT_COLOR,
             "backgroundColor": PRIMARY_COLOR,
+            "borderColor": PRIMARY_BORDER_COLOR,
+            "borderWidth": 1,
+            "pointBackgroundColor": ACCENT_COLOR,
+            "pointBorderColor": ACCENT_BORDER_COLOR,
+        }],
+    }
+
+
+def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
+    """
+    Returns the data object used by Chart.js to generate a Number of Listings per Neighborhood doughnut chart for the num_neighborhoods most popular neighborhoods, including the query_neighborhood if specified.
+    """
+
+    if not query_neighborhood:
+        query_neighborhood = None
+
+    # A dictionary mapping each neighborhood to the number of listings in that neighborhood
+    neighborhood_counts = defaultdict(lambda: 0)
+    query_neighborhood_count = 0
+    for listing in listings:
+        neighborhood = listing["host_neighbourhood"]
+        if not neighborhood:
+            continue
+        if neighborhood == query_neighborhood:
+            query_neighborhood_count += 1
+        else:
+            neighborhood_counts[neighborhood] += 1
+
+    if query_neighborhood is None or query_neighborhood_count == 0:
+        popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_counts, key=neighborhood_counts.get)
+        chart_color = PRIMARY_BORDER_COLOR
+    else:
+        popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_counts, key=neighborhood_counts.get)
+        popular_neighborhoods.append(query_neighborhood)
+        neighborhood_counts[query_neighborhood] = query_neighborhood_count
+        chart_color = [PRIMARY_BORDER_COLOR] * (num_neighborhoods - 1)
+        # Have the query neighborhood be an accent color
+        chart_color.append(ACCENT_BORDER_COLOR)
+
+    labels = [neighborhood for neighborhood in popular_neighborhoods]
+    data = [neighborhood_counts[neighborhood] for neighborhood in popular_neighborhoods]
+
+    return {
+        "labels": labels,
+        "datasets": [{
+            "label": "Number of Listings",
+            "data": data,
+            "backgroundColor": chart_color,
         }],
     }
 
@@ -230,14 +279,17 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=8)
         popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_data,
                                                key=lambda n: neighborhood_data[n][0])
         chart_color = PRIMARY_COLOR
+        chart_border_color = PRIMARY_BORDER_COLOR
     else:
         popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_data,
                                                key=lambda n: neighborhood_data[n][0])
         popular_neighborhoods.append(query_neighborhood)
         neighborhood_data[query_neighborhood] = query_neighborhood_data
         chart_color = [PRIMARY_COLOR] * (num_neighborhoods - 1)
+        chart_border_color = [PRIMARY_BORDER_COLOR] * (num_neighborhoods - 1)
         # Have the query neighborhood be an accent color
         chart_color.append(ACCENT_COLOR)
+        chart_border_color.append(ACCENT_BORDER_COLOR)
 
     labels = [neighborhood for neighborhood in popular_neighborhoods]
     data = [round_to(neighborhood_data[neighborhood][1] / neighborhood_data[neighborhood][0], 2) for neighborhood in
@@ -249,50 +301,8 @@ def get_price_vs_neighborhood_data(query_neighborhood=None, num_neighborhoods=8)
             "label": "Average Price ($)",
             "data": data,
             "backgroundColor": chart_color,
-        }],
-    }
-
-
-def get_listings_per_neighborhood_data(query_neighborhood=None, num_neighborhoods=8):
-    """
-    Returns the data object used by Chart.js to generate a Number of Listings per Neighborhood doughnut chart for the num_neighborhoods most popular neighborhoods, including the query_neighborhood if specified.
-    """
-
-    if not query_neighborhood:
-        query_neighborhood = None
-
-    # A dictionary mapping each neighborhood to the number of listings in that neighborhood
-    neighborhood_counts = defaultdict(lambda: 0)
-    query_neighborhood_count = 0
-    for listing in listings:
-        neighborhood = listing["host_neighbourhood"]
-        if not neighborhood:
-            continue
-        if neighborhood == query_neighborhood:
-            query_neighborhood_count += 1
-        else:
-            neighborhood_counts[neighborhood] += 1
-
-    if query_neighborhood is None or query_neighborhood_count == 0:
-        popular_neighborhoods = heapq.nlargest(num_neighborhoods, neighborhood_counts, key=neighborhood_counts.get)
-        chart_color = PRIMARY_COLOR
-    else:
-        popular_neighborhoods = heapq.nlargest(num_neighborhoods - 1, neighborhood_counts, key=neighborhood_counts.get)
-        popular_neighborhoods.append(query_neighborhood)
-        neighborhood_counts[query_neighborhood] = query_neighborhood_count
-        chart_color = [PRIMARY_COLOR] * (num_neighborhoods - 1)
-        # Have the query neighborhood be an accent color
-        chart_color.append(ACCENT_COLOR)
-
-    labels = [neighborhood for neighborhood in popular_neighborhoods]
-    data = [neighborhood_counts[neighborhood] for neighborhood in popular_neighborhoods]
-
-    return {
-        "labels": labels,
-        "datasets": [{
-            "label": "Number of Listings",
-            "data": data,
-            "backgroundColor": chart_color,
+            "borderColor": chart_border_color,
+            "borderWidth": 1,
         }],
     }
 
@@ -324,6 +334,8 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
             "label": "Number of Listings",
             "data": data,
             "backgroundColor": PRIMARY_COLOR,
+            "borderColor": PRIMARY_BORDER_COLOR,
+            "borderWidth": 1,
         }],
     }
 
