@@ -18,16 +18,21 @@
     width: 100%;
 }
 
-.listing-item {
-    display: flex;
+.listing-item .row {
+    margin-bottom: 0;
+}
+
+.listing-item .col {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .listing-thumbnail img {
     display: block;
+    width: 100%;
 }
 
 .listing-summary {
-    width: 100%;
     padding-left: 20px;
     padding-right: 20px;
 }

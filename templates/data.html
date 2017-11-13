@@ -80,10 +80,12 @@
         <ul class="collection">
             {% for listing in nearby_listings %}
             <li class="listing-item collection-item">
-                <div class="listing-thumbnail"><img src="{{ listing.thumbnail_url }}"/></div>
-                <div class="listing-summary">{{ listing.summary }}</div>
-                <div class="listing-price">{{ listing.price | format_money }}</div>
-                <div class="listing-link"><a href="{{ listing.url }}" target="_blank" rel="noopener noreferrer"><i class="material-icons">open_in_new</i></a></div>
+                <div class="row">
+                    <div class="listing-thumbnail col s12 m3"><img src="{{ listing.thumbnail_url }}"/></div>
+                    <div class="listing-summary col s12 m6 l7">{{ listing.summary }}</div>
+                    <div class="listing-price col s3 m2 l1">{{ listing.price | format_money }}</div>
+                    <div class="listing-link col s3 m1"><a href="{{ listing.url }}" target="_blank" rel="noopener noreferrer"><i class="material-icons">open_in_new</i></a></div>
+                </div>
             </li>
             {% endfor %}
         </ul>
