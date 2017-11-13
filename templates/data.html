@@ -73,4 +73,19 @@
             </div>
         </div>
     </div>
+
+    <div class="card-panel z-depth-2">
+        <h4>Nearby Listings</h4>
+        <div class="grey-text">Compare your property to nearby listings.</div>
+        <ul class="collection">
+            {% for listing in nearby_listings %}
+            <li class="listing-item collection-item">
+                <div class="listing-thumbnail"><img src="{{ listing.thumbnail_url }}"/></div>
+                <div class="listing-summary">{{ listing.summary }}</div>
+                <div class="listing-price">{{ listing.price | format_money }}</div>
+                <div class="listing-link"><a href="{{ listing.url }}" target="_blank" rel="noopener noreferrer"><i class="material-icons">open_in_new</i></a></div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

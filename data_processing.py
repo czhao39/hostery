@@ -96,6 +96,24 @@ def get_optimal_price(lat, lng, n=30):
     return -curve_coeffs[1] / (2 * curve_coeffs[0])
 
 
+def get_neighborhood_avg_price(neighborhood, min_listings=4):
+    """
+    Returns the average price in neighborhood. If the number of listings in neighborhood is less than min_listings, returns None.
+    """
+
+    num_listings = 0
+    total_price = 0
+    for listing in listings:
+        if listing["host_neighbourhood"] == neighborhood:
+            num_listings += 1
+            total_price += price_str_to_float(listing["price"])
+
+    if num_listings < min_listings:
+        return None
+
+    return total_price / num_listings
+
+
 def get_most_popular_neighborhood(min_ratings=20):
     """
     Returns the neighborhood with the most positive average rating, with at least min_ratings ratings.
@@ -142,24 +160,6 @@ def get_best_neighborhood_investment():
     investment_scores = {n: neighborhood_avg_prices[n] * neighborhood_total_reviews[n] for n in neighborhood_avg_prices}
 
     return max(investment_scores, key=lambda n: investment_scores[n])
-
-
-def get_neighborhood_avg_price(neighborhood, min_listings=4):
-    """
-    Returns the average price in neighborhood. If the number of listings in neighborhood is less than min_listings, returns None.
-    """
-
-    num_listings = 0
-    total_price = 0
-    for listing in listings:
-        if listing["host_neighbourhood"] == neighborhood:
-            num_listings += 1
-            total_price += price_str_to_float(listing["price"])
-
-    if num_listings < min_listings:
-        return None
-
-    return total_price / num_listings
 
 
 def get_listing_avgs_data(query_neighborhood=None):
@@ -314,7 +314,7 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
         distribution[interval_start] += 1
 
     sorted_intervals = sorted(distribution.keys())
-    labels = ["${}\u2013${}".format(interval_start, interval_start + interval_size - 1) for interval_start in
+    labels = ["${}\u2013${}".format(interval_start, interval_start + interval_size - 0) for interval_start in
               sorted_intervals]
     data = [distribution[interval_start] for interval_start in sorted_intervals]
 
@@ -326,6 +326,27 @@ def get_price_distribution_data(query_neighborhood=None, interval_size=50):
             "backgroundColor": PRIMARY_COLOR,
         }],
     }
+
+
+def get_nearby_listings(lat, lng, n=6):
+    """
+    Returns an array containing information about the n nearest listings.
+    """
+
+    listings_by_dist = []
+    for listing in listings:
+        thumbnail_url = listing["thumbnail_url"]
+        # Skip listing if no thumbnail
+        if not thumbnail_url.startswith("http"):
+            continue
+        dist_sq = get_dist_squared(lat, lng, float(listing["latitude"]), float(listing["longitude"]))
+        price = price_str_to_float(listing["price"])
+        url = listing["listing_url"]
+        summary = listing["summary"]
+        listings_by_dist.append((dist_sq, price, thumbnail_url, url, summary))
+    n_closest = heapq.nsmallest(n, listings_by_dist)
+
+    return [{"price": listing[1], "thumbnail_url": listing[2], "url": listing[3], "summary": listing[4]} for listing in n_closest]
 
 
 # For testing purposes.

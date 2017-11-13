@@ -17,3 +17,22 @@
     position: relative;
     width: 100%;
 }
+
+.listing-item {
+    display: flex;
+}
+
+.listing-thumbnail img {
+    display: block;
+}
+
+.listing-summary {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.listing-price {
+    padding-left: 20px;
+    padding-right: 20px;
+}

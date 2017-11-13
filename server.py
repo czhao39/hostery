@@ -68,6 +68,7 @@ def data():
             "listings_per_neighborhood": data_processing.get_listings_per_neighborhood_data(neighborhood),
             "price_distribution": data_processing.get_price_distribution_data(neighborhood),
             "price_per_neighborhood": data_processing.get_price_vs_neighborhood_data(neighborhood),
+            "nearby_listings": data_processing.get_nearby_listings(lat, lng),
         }
         return render_template("data.html", **context)
     except:
